@@ -1,7 +1,7 @@
 package com.generation.italy;
 
 import com.generation.italy.fight.Combat;
-import com.generation.italy.domain.Inventory;
+import com.generation.italy.domain.Stats;
 import com.generation.italy.domain.Player;
 import com.generation.italy.domain.Location;
 import com.generation.italy.domain.Enemy;
@@ -23,7 +23,7 @@ public class Main {
         Player pg = CreatePlayer.crea();
 
         // 2. Assegna le caratteristiche
-        Inventory.assegna(pg);
+        Stats.assegna(pg);
 
         // CICLO AVVENTURA DI DUNGEON IN DUNGEON
         boolean continua = true;

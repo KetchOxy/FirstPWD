@@ -63,7 +63,7 @@ public class CreateEnemy {
                     break;
             }
         } else {
-            // Mostro normale (il vostro codice originale)
+            // Mostro normale (codice originale)
             nemico.nome = loc.nomeNemico;
             switch (loc.nomeNemico) {
                 case "Scheletro":

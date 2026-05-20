@@ -4,7 +4,7 @@ import com.generation.italy.utils.OutputUtils;
 import com.generation.library.*;
 
 // CARATTERISTICHE PERSONAGGIO - inserimento FOR, DES, COS, INT, SAG, CAR
-public class Inventory {
+public class Stats {
 
     public static void assegna(Player pg) {
 
