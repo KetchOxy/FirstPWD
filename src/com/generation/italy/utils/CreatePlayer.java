@@ -34,20 +34,20 @@ public class CreatePlayer {
         }
 
         // ARMA CON VALIDAZIONE
-        OutputUtils.print("Arma (Pugnale, Scimitarra, SpadaCorta, AsciaGuerra, Flagello, Lancia,");
-        OutputUtils.print("      SpadaLunga, MartelloGuerra, PicconeGuerra, Stocco, Alabarda,");
-        OutputUtils.print("      Picca, LanciaGiostra, AsciaDueMani, Spadone, Falcione): ");
-        System.out.print("Arma: ");
+        System.out.print("Scegli l'arma da mischia: (1.Pugnale\n2.Scimitarra\n3.SpadaCorta\n4.AsciaGuerra\n5.Flagello\n6.Lancia\n7.SpadaLunga\n8.MartelloGuerra\n9.PicconeGuerra\n10.Stocco\n11.Alabarda\n12.Spadone\n13.Falcione)");
         pg.arma = Console.readString();
         while (armaValida(pg.arma) == false) {
-            OutputUtils.print("Arma non valida! Riprova.");
+            OutputUtils.print("Arma non valida o non presente nel manuale! Riprova.");
             System.out.print("Arma: ");
             pg.arma = Console.readString();
         }
 
+        // PUNTI FERITA E CLASSE ARMATURA
         System.out.print("Punti Ferita: ");
         pg.puntiFerita = Console.readInt();
-        System.out.print("Classe Armatura: ");
+        pg.puntiFeritaMax = pg.puntiFerita; // <-- NUOVA: Copia il valore massimo iniziale
+
+        System.out.print("Classe Armatura (CA): ");
         pg.classeArmatura = Console.readInt();
 
         return pg;
@@ -65,9 +65,6 @@ public class CreatePlayer {
                 arma.equalsIgnoreCase("PicconeGuerra")  ||
                 arma.equalsIgnoreCase("Stocco")         ||
                 arma.equalsIgnoreCase("Alabarda")       ||
-                arma.equalsIgnoreCase("Picca")          ||
-                arma.equalsIgnoreCase("LanciaGiostra")  ||
-                arma.equalsIgnoreCase("AsciaDueMani")   ||
                 arma.equalsIgnoreCase("Spadone")        ||
                 arma.equalsIgnoreCase("Falcione");
     }
