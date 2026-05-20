@@ -1,7 +1,7 @@
 package com.generation.italy.fight;
 
-import com.generation.italy.*;
 import com.generation.italy.utils.Dices;
+import com.generation.italy.utils.OutputUtils;
 import com.generation.library.*;
 
 // TIRO ABILITA' - gestisce il tiro di abilita' con vantaggio/svantaggio
@@ -9,27 +9,22 @@ public class TiroAbilita {
 
     public static void esegui(int modificatore) {
 
-        System.out.println("--- Tiro di abilita' ---");
+        OutputUtils.print("--- Tiro di abilita' ---");
 
-        // VANTAGGIO/SVANTAGGIO
         int tiroBase = lanciaD20();
 
         if (tiroBase == 1) {
             // FUMBLE - fallimento automatico, modificatore non applicato
-            System.out.println("*** FUMBLE! ***");
+            OutputUtils.print("*** FUMBLE! ***");
             int effetto = Dices.tira(3);
-            if (effetto == 1) System.out.println("FALLIMENTO TOTALE!");
-            if (effetto == 2) System.out.println("Fallimento Critico!");
-            if (effetto == 3) System.out.println("Fallimento critico");
-        } else if (tiroBase == 20) {
-            // CRITICO - successo automatico
-            System.out.println("*** CRITICO! ***");
-            int tiroFinale = tiroBase + modificatore;
-            System.out.println("Tiro finale: " + tiroBase + " + mod(" + modificatore + ") = " + tiroFinale);
+            if (effetto == 1) OutputUtils.print("FALLIMENTO TOTALE!");
+            if (effetto == 2) OutputUtils.print("Fallimento Critico!");
+            if (effetto == 3) OutputUtils.print("Fallimento critico");
         } else {
-            // TIRO NORMALE - applico il modificatore
+            // CRITICO O NORMALE - applico il modificatore
+            if (tiroBase == 20) OutputUtils.print("*** CRITICO! ***");
             int tiroFinale = tiroBase + modificatore;
-            System.out.println("Tiro finale: " + tiroBase + " + mod(" + modificatore + ") = " + tiroFinale);
+            OutputUtils.print("Tiro finale: " + tiroBase + " + mod(" + modificatore + ") = " + tiroFinale);
         }
     }
 
@@ -40,23 +35,20 @@ public class TiroAbilita {
 
         int tiroBase;
         if (vs.equals("v")) {
-            // VANTAGGIO - lancia due D20 e tiene il piu' alto
             int dado1 = Dices.tira(20);
             int dado2 = Dices.tira(20);
-            System.out.println("Dadi: " + dado1 + " e " + dado2);
+            OutputUtils.print("Dadi: " + dado1 + " e " + dado2);
             tiroBase = dado1 > dado2 ? dado1 : dado2;
-            System.out.println("Tieni il piu' alto: " + tiroBase);
+            OutputUtils.print("Tieni il piu' alto: " + tiroBase);
         } else if (vs.equals("s")) {
-            // SVANTAGGIO - lancia due D20 e tiene il piu' basso
             int dado1 = Dices.tira(20);
             int dado2 = Dices.tira(20);
-            System.out.println("Dadi: " + dado1 + " e " + dado2);
+            OutputUtils.print("Dadi: " + dado1 + " e " + dado2);
             tiroBase = dado1 < dado2 ? dado1 : dado2;
-            System.out.println("Tieni il piu' basso: " + tiroBase);
+            OutputUtils.print("Tieni il piu' basso: " + tiroBase);
         } else {
-            // NESSUNO - lancio normale
             tiroBase = Dices.tira(20);
-            System.out.println("D20: " + tiroBase);
+            OutputUtils.print("D20: " + tiroBase);
         }
         return tiroBase;
     }

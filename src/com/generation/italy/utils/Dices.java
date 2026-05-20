@@ -15,7 +15,7 @@ public class Dices {
         System.out.print("Quante facce ha il dado? ");
         int facce = Console.readInt();
         while (dadoValido(facce) == false) {
-            System.out.println("Dado non valido! Scegli tra: 4, 6, 8, 10, 12, 20, 100");
+            OutputUtils.print("Dado non valido! Scegli tra: 4, 6, 8, 10, 12, 20, 100");
             System.out.print("Quante facce ha il dado? ");
             facce = Console.readInt();
         }
@@ -27,4 +27,3 @@ public class Dices {
         return facce == 4  || facce == 6  || facce == 8 ||
                 facce == 10 || facce == 12 || facce == 20 || facce == 100;
     }
-}

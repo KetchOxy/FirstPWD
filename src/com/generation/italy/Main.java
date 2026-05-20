@@ -4,9 +4,10 @@ import com.generation.italy.fight.Combat;
 import com.generation.italy.domain.Inventory;
 import com.generation.italy.domain.Player;
 import com.generation.italy.utils.CreatePlayer;
+import com.generation.italy.utils.OutputUtils;
 
-public class Main{
-    // GIOCO DND - classe principale, contiene il main
+public class Main {
+
     public static void main(String[] args) {
 
         // 1. Crea il personaggio (nome, specie, classe, PF, CA)
@@ -18,5 +19,4 @@ public class Main{
         // 3. Avvia il simulatore di dadi
         Combat.avvia(pg);
     }
-
 }

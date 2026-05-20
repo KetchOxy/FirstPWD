@@ -1,6 +1,5 @@
 package com.generation.italy.utils;
 
-import com.generation.italy.*;
 import com.generation.library.*;
 
 // ARMI - contiene i metodi per ogni arma marziale da mischia D&D 2024
@@ -9,20 +8,20 @@ public class Weapons {
     // --- ARMI CON D4 ---
     public static int pugnale() {
         int risultato = Dices.tira(4);
-        System.out.println("Dadi: D4: " + risultato);
+        OutputUtils.print("Dadi: D4: " + risultato);
         return risultato;
     }
 
     // --- ARMI CON D6 ---
     public static int scimitarra() {
         int risultato = Dices.tira(6);
-        System.out.println("Dadi: D6: " + risultato);
+        OutputUtils.print("Dadi: D6: " + risultato);
         return risultato;
     }
 
     public static int spadaCorta() {
         int risultato = Dices.tira(6);
-        System.out.println("Dadi: D6: " + risultato);
+        OutputUtils.print("Dadi: D6: " + risultato);
         return risultato;
     }
 
@@ -33,10 +32,10 @@ public class Weapons {
         int risultato;
         if (mani == 2) {
             risultato = Dices.tira(10);
-            System.out.println("Dadi: D10: " + risultato);
+            OutputUtils.print("Dadi: D10: " + risultato);
         } else {
             risultato = Dices.tira(8);
-            System.out.println("Dadi: D8: " + risultato);
+            OutputUtils.print("Dadi: D8: " + risultato);
         }
         return risultato;
     }
@@ -47,10 +46,10 @@ public class Weapons {
         int risultato;
         if (mani == 2) {
             risultato = Dices.tira(8);
-            System.out.println("Dadi: D8: " + risultato);
+            OutputUtils.print("Dadi: D8: " + risultato);
         } else {
             risultato = Dices.tira(6);
-            System.out.println("Dadi: D6: " + risultato);
+            OutputUtils.print("Dadi: D6: " + risultato);
         }
         return risultato;
     }
@@ -61,10 +60,10 @@ public class Weapons {
         int risultato;
         if (mani == 2) {
             risultato = Dices.tira(10);
-            System.out.println("Dadi: D10: " + risultato);
+            OutputUtils.print("Dadi: D10: " + risultato);
         } else {
             risultato = Dices.tira(8);
-            System.out.println("Dadi: D8: " + risultato);
+            OutputUtils.print("Dadi: D8: " + risultato);
         }
         return risultato;
     }
@@ -75,10 +74,10 @@ public class Weapons {
         int risultato;
         if (mani == 2) {
             risultato = Dices.tira(10);
-            System.out.println("Dadi: D10: " + risultato);
+            OutputUtils.print("Dadi: D10: " + risultato);
         } else {
             risultato = Dices.tira(8);
-            System.out.println("Dadi: D8: " + risultato);
+            OutputUtils.print("Dadi: D8: " + risultato);
         }
         return risultato;
     }
@@ -86,45 +85,45 @@ public class Weapons {
     // --- ARMI CON D8 FISSO ---
     public static int flagello() {
         int risultato = Dices.tira(8);
-        System.out.println("Dadi: D8: " + risultato);
+        OutputUtils.print("Dadi: D8: " + risultato);
         return risultato;
     }
 
     public static int picconeGuerra() {
         int risultato = Dices.tira(8);
-        System.out.println("Dadi: D8: " + risultato);
+        OutputUtils.print("Dadi: D8: " + risultato);
         return risultato;
     }
 
     public static int stocco() {
         int risultato = Dices.tira(8);
-        System.out.println("Dadi: D8: " + risultato);
+        OutputUtils.print("Dadi: D8: " + risultato);
         return risultato;
     }
 
     // --- ARMI CON D10 ---
     public static int alabarda() {
         int risultato = Dices.tira(10);
-        System.out.println("Dadi: D10: " + risultato);
+        OutputUtils.print("Dadi: D10: " + risultato);
         return risultato;
     }
 
     public static int picca() {
         int risultato = Dices.tira(10);
-        System.out.println("Dadi: D10: " + risultato);
+        OutputUtils.print("Dadi: D10: " + risultato);
         return risultato;
     }
 
     public static int lanciaGiostra() {
         int risultato = Dices.tira(10);
-        System.out.println("Dadi: D10: " + risultato);
+        OutputUtils.print("Dadi: D10: " + risultato);
         return risultato;
     }
 
     // --- ARMI CON D12 ---
     public static int asciaDueMani() {
         int risultato = Dices.tira(12);
-        System.out.println("Dadi: D12: " + risultato);
+        OutputUtils.print("Dadi: D12: " + risultato);
         return risultato;
     }
 
@@ -132,14 +131,14 @@ public class Weapons {
     public static int spadone() {
         int d1 = Dices.tira(6);
         int d2 = Dices.tira(6);
-        System.out.println("Dadi: D6: " + d1 + "  D6: " + d2);
+        OutputUtils.print("Dadi: D6: " + d1 + "  D6: " + d2);
         return d1 + d2;
     }
 
     public static int falcione() {
         int d1 = Dices.tira(6);
         int d2 = Dices.tira(6);
-        System.out.println("Dadi: D6: " + d1 + "  D6: " + d2);
+        OutputUtils.print("Dadi: D6: " + d1 + "  D6: " + d2);
         return d1 + d2;
     }
 
