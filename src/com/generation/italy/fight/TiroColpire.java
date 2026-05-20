@@ -7,13 +7,26 @@ import com.generation.italy.utils.Weapons;
 import com.generation.library.*;
 
 // TIRO COLPIRE - gestisce il tiro per colpire, CA e dadi danno
+// restituisce il danno inflitto (0 se manca)
 public class TiroColpire {
 
-    public static void esegui(int modificatore, Player pg) {
+    // 3 PARAMETRI: modificatore, personaggio, CA del nemico, bonus location
+    public static int esegui(int modificatore, Player pg, int caNemico, boolean haBonus) {
 
         OutputUtils.print("--- Tiro per colpire ---");
 
-        int tiroBase = TiroAbilita.lanciaD20();
+        // SE HA BONUS LOCATION - lancia con vantaggio automaticamente
+        int tiroBase;
+        if (haBonus) {
+            OutputUtils.print("*** Bonus location attivo: tiri con vantaggio! ***");
+            int dado1 = Dices.tira(20);
+            int dado2 = Dices.tira(20);
+            OutputUtils.print("Dadi: " + dado1 + " e " + dado2);
+            tiroBase = dado1 > dado2 ? dado1 : dado2;
+            OutputUtils.print("Tieni il piu' alto: " + tiroBase);
+        } else {
+            tiroBase = TiroAbilita.lanciaD20();
+        }
 
         if (tiroBase == 1) {
             // FUMBLE - mancato automatico, modificatore non applicato
@@ -22,17 +35,19 @@ public class TiroColpire {
             if (effetto == 1) OutputUtils.print("Hai colpito te stesso!");
             if (effetto == 2) OutputUtils.print("Hai perso l'arma!");
             if (effetto == 3) OutputUtils.print("Sei caduto a terra!");
+            return 0; // nessun danno
         } else {
             if (tiroBase == 20) OutputUtils.print("*** CRITICO! ***");
 
             int tiroFinale = tiroBase + modificatore;
             OutputUtils.print("Tiro finale: " + tiroBase + " + mod(" + modificatore + ") = " + tiroFinale);
 
-            System.out.print("Classe Armatura del nemico? ");
-            int ca = Console.readInt();
+            // USA LA CA DEL NEMICO passata come parametro invece di chiederla
+            OutputUtils.print("CA nemica: " + caNemico);
 
-            if (tiroFinale < ca && tiroBase != 20) {
-                OutputUtils.print("Hai mancato! CA nemica: " + ca);
+            if (tiroFinale < caNemico && tiroBase != 20) {
+                OutputUtils.print("Hai mancato! CA nemica: " + caNemico);
+                return 0; // nessun danno
             } else {
                 OutputUtils.print("Hai colpito! Arma: " + pg.arma);
                 int danno = Weapons.tiraDannoArma(pg.arma);
@@ -43,6 +58,7 @@ public class TiroColpire {
                 }
 
                 OutputUtils.print("Totale danno: " + danno);
+                return danno; // restituisce il danno inflitto
             }
         }
     }

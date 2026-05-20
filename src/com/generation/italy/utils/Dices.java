@@ -7,7 +7,7 @@ public class Dices {
 
     // TIRA - riceve le facce come parametro e restituisce il risultato
     public static int tira(int facce) {
-        return (int)(Math.random() * facce) + 1;
+        return (int) (Math.random() * facce) + 1;
     }
 
     // CHIEDI FACCE - chiede le facce all'utente, valida e le restituisce
@@ -24,6 +24,7 @@ public class Dices {
 
     // DADO VALIDO - controlla che il dado esista in D&D
     public static boolean dadoValido(int facce) {
-        return facce == 4  || facce == 6  || facce == 8 ||
+        return facce == 4 || facce == 6 || facce == 8 ||
                 facce == 10 || facce == 12 || facce == 20 || facce == 100;
     }
+}

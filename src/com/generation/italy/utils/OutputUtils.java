@@ -16,7 +16,7 @@ public class OutputUtils {
         public static void printTitle() {
 
             OutputUtils.print("=================================");
-            OutputUtils.print("      THE LOST KINGDOM");
+            OutputUtils.print("      DnD CAMPAIGN BY MANU");
             OutputUtils.print("=================================");
             OutputUtils.print();
         }
