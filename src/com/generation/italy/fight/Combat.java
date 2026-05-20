@@ -29,23 +29,19 @@ public class Combat {
             int sceltaAzione = Console.readInt();
 
             if (sceltaAzione == 1) {
-                // DETERMINAZIONE AUTOMATICA DEL TIPO DI TIRO (Ferite)
-                String statoTiro = "no"; // Di base tiro normale
+                String statoTiro = "no";
 
-                // Condizione 1: Il giocatore è sotto la metà dei suoi PF max -> SVANTAGGIO
+                // Vantaggio e svantaggio automatici legati alle ferite
                 if (pg.puntiFerita < (pg.puntiFeritaMax / 2.0)) {
-                    OutputUtils.print(" Sei ferito gravemente e perdi sangue! Attacchi con SVANTAGGIO!");
+                    OutputUtils.print("[STATO: FERITO GRAVEMENTE] Attacchi con SVANTAGGIO!");
                     statoTiro = "s";
                 }
-                // Condizione 2: Il nemico è sotto la metà dei suoi PF iniziali -> VANTAGGIO
                 else if (nemico.puntiFerita < (pfMostroIniziali / 2.0)) {
-                    OutputUtils.print(" Il nemico e' stremato e barcolla! Approfitti del VANTAGGIO!");
+                    OutputUtils.print("[STATO: NEMICO STREMATO] Approfitti del VANTAGGIO!");
                     statoTiro = "v";
                 }
 
                 int modAttacco = Player.calcolaModificatore(pg.forza);
-
-                // Usiamo il nuovo metodo modificato che calcola il vantaggio/svantaggio senza fare domande
                 int dannoInflitto = TiroColpire.eseguiAutomatico(modAttacco, pg, nemico.classeArmatura, statoTiro);
 
                 if (dannoInflitto > 0) {
@@ -58,9 +54,9 @@ public class Combat {
                 }
             } else if (sceltaAzione == 2) {
                 if (pg.numeroPozioni > 0) {
-                    int cura = Dices.tira(4) + Dices.tira(4) + 2; // 2d4 + 2
+                    int cura = Dices.tira(4) + Dices.tira(4) + 2;
                     OutputUtils.print("Bevi una pozione di cura!");
-                    pg.riceviCura(cura); // <-- Chiamata al metodo sicuro (No sovracura)
+                    pg.riceviCura(cura);
                     pg.numeroPozioni--;
                     OutputUtils.print("I tuoi nuovi PF: " + pg.puntiFerita + "/" + pg.puntiFeritaMax);
                 } else {
@@ -105,6 +101,7 @@ public class Combat {
             OutputUtils.print("GAME OVER");
         } else {
             OutputUtils.print("Hai sconfitto " + nemico.nome + "! Vittoria!");
+
         }
     }
 }

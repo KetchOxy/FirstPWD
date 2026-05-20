@@ -1,13 +1,11 @@
 package com.generation.italy.utils;
 
 import com.generation.italy.domain.Location;
-import com.generation.library.*;
-
-// CREATE LOCATION - gestisce la scelta della location e i suoi attributi
+import com.generation.library.Console;
+import com.generation.italy.domain.Player;
 public class CreateLocation {
 
-    public static Location scegli() {
-
+    public static Location scegli(Player pg) {
         OutputUtils.print("=== Scegli la Location ===");
         OutputUtils.print("1. Dungeon     - Corridoi bui e trappole. Nemico: Scheletro");
         OutputUtils.print("2. Foresta     - Alberi fitti e sentieri nascosti. Nemico: Lupo");
@@ -30,7 +28,7 @@ public class CreateLocation {
                 break;
             case 2:
                 loc.nome = "Foresta";
-                loc.descrizione = "Alberi fitti, rami che scricchiolano e occhi nell'ombra.";
+                loc.descrizione = "Alberi fitti, fitta vegetazione e ombre che si muovono rapide.";
                 loc.nomeNemico = "Lupo";
                 loc.bonusClasse = "Ranger";
                 loc.bonusColpire = true;
@@ -64,9 +62,16 @@ public class CreateLocation {
 
         OutputUtils.print();
         OutputUtils.print("Sei entrato in: " + loc.nome);
-        OutputUtils.print(loc.descrizione);
-
-        // BONUS CLASSE - avvisa il giocatore se ha un bonus in questa location
+        if (pg.classe.equalsIgnoreCase(loc.bonusClasse)) {
+            OutputUtils.print("\n*** BONUS! La tua classe " + pg.classe + " ha una grande familiarita' con " + loc.nome + "! ***");
+        }
         return loc;
+    }
+
+    // NUOVO METODO: Gestisce la domanda sul cambio di dungeon
+    public static boolean richiediNuovoViaggio() {
+        System.out.print("Sei pronto a metterti in viaggio verso una NUOVA LOCATION? (s/n): ");
+        String risposta = Console.readString();
+        return risposta.equalsIgnoreCase("s");
     }
 }
