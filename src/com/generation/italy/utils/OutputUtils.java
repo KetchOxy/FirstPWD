@@ -1,26 +1,16 @@
 package com.generation.italy.utils;
 
-import com.generation.italy.domain.*;
-
-
 public class OutputUtils {
+    public static void print(String msg) { System.out.println(msg); }
+    public static void print(Object obj) { System.out.println(obj); }
+    public static void print()           { System.out.println(); }
 
-        public static void print(String message) {
-            System.out.println(message);
-        }
-
-        public static void print() {
-            System.out.println();
-        }
-
-        public static void printTitle() {
-
-            OutputUtils.print("=================================");
-            OutputUtils.print("      DnD CAMPAIGN BY MANU/KONRAD");
-            OutputUtils.print("=================================");
-            OutputUtils.print();
-        }
-
-
+    public static void printTitle() {
+        print("=================================");
+        print("   DnD DUNGEON CRAWLER - v2.0   ");
+        print("        by Manu/Konrad         ");
+        print("=================================");
+        print();
     }
+}
 

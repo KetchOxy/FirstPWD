@@ -3,33 +3,34 @@ package com.generation.italy.fight;
 import com.generation.italy.utils.Dices;
 import com.generation.italy.utils.OutputUtils;
 
+/**
+ * TIRO ABILITA' - Tiro d20 contro una Classe di Difficoltà.
+ */
 public class TiroAbilita {
 
-    // Esegue il tiro e restituisce true se supera la CD, altrimenti false
     public static boolean eseguiControCD(int modificatore, int cd) {
+        OutputUtils.print("--- Tiro di Abilità (CD " + cd + ") ---");
 
-        OutputUtils.print("--- Tiro di Abilita' (Contro CD " + cd + ") ---");
+        int tiro = Dices.tira(20);
+        OutputUtils.print("Dado: " + tiro);
 
-        int tiroBase = Dices.tira(20);
-        OutputUtils.print("Lancio del dado base: " + tiroBase);
-
-        if (tiroBase == 1) {
+        if (tiro == 1) {
             OutputUtils.print("*** FUMBLE! Fallimento automatico! ***");
             return false;
-        } else if (tiroBase == 20) {
-            OutputUtils.print("*** CRITICO! Successo automatico spettacolare! ***");
+        } else if (tiro == 20) {
+            OutputUtils.print("*** CRITICO! Successo automatico! ***");
+            return true;
+        }
+
+        int totale = tiro + modificatore;
+        OutputUtils.print("Totale: " + tiro + " + mod(" + modificatore + ") = " + totale + " vs CD " + cd);
+
+        if (totale >= cd) {
+            OutputUtils.print("[SUCCESSO]");
             return true;
         } else {
-            int tiroFinale = tiroBase + modificatore;
-            OutputUtils.print("Tiro finale: " + tiroBase + " + mod(" + modificatore + ") = " + tiroFinale);
-
-            if (tiroFinale >= cd) {
-                OutputUtils.print("[SUCCESSO] Hai superato la prova!");
-                return true;
-            } else {
-                OutputUtils.print("[FALLIMENTO] Non ci sei riuscito...");
-                return false;
-            }
+            OutputUtils.print("[FALLIMENTO]");
+            return false;
         }
     }
 }

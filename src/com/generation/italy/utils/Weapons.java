@@ -1,166 +1,64 @@
 package com.generation.italy.utils;
 
-import com.generation.library.*;
+import com.generation.library.Console;
 
-// ARMI - contiene i metodi per ogni arma marziale da mischia D&D 2024
+/**
+ * WEAPONS - Tira i dadi danno per ogni arma D&D 2024.
+ */
 public class Weapons {
 
-    // --- ARMI CON D4 ---
-    public static int pugnale() {
-        int risultato = Dices.tira(4);
-        OutputUtils.print("Dadi: D4: " + risultato);
-        return risultato;
-    }
-
-    // --- ARMI CON D6 ---
-    public static int scimitarra() {
-        int risultato = Dices.tira(6);
-        OutputUtils.print("Dadi: D6: " + risultato);
-        return risultato;
-    }
-
-    public static int spadaCorta() {
-        int risultato = Dices.tira(6);
-        OutputUtils.print("Dadi: D6: " + risultato);
-        return risultato;
-    }
-
-    // --- ARMI VERSATILI ---
-    public static int asciaGuerra() {
-        System.out.print("Usi l'ascia a una mano o due mani? (1/2): ");
-        int mani = Console.readInt();
-        int risultato;
-        if (mani == 2) {
-            risultato = Dices.tira(10);
-            OutputUtils.print("Dadi: D10: " + risultato);
-        } else {
-            risultato = Dices.tira(8);
-            OutputUtils.print("Dadi: D8: " + risultato);
-        }
-        return risultato;
-    }
-
-    public static int lancia() {
-        System.out.print("Usi la lancia a una mano o due mani? (1/2): ");
-        int mani = Console.readInt();
-        int risultato;
-        if (mani == 2) {
-            risultato = Dices.tira(8);
-            OutputUtils.print("Dadi: D8: " + risultato);
-        } else {
-            risultato = Dices.tira(6);
-            OutputUtils.print("Dadi: D6: " + risultato);
-        }
-        return risultato;
-    }
-
-    public static int spadaLunga() {
-        System.out.print("Usi la spada a una mano o due mani? (1/2): ");
-        int mani = Console.readInt();
-        int risultato;
-        if (mani == 2) {
-            risultato = Dices.tira(10);
-            OutputUtils.print("Dadi: D10: " + risultato);
-        } else {
-            risultato = Dices.tira(8);
-            OutputUtils.print("Dadi: D8: " + risultato);
-        }
-        return risultato;
-    }
-
-    public static int martelloGuerra() {
-        System.out.print("Usi il martello a una mano o due mani? (1/2): ");
-        int mani = Console.readInt();
-        int risultato;
-        if (mani == 2) {
-            risultato = Dices.tira(10);
-            OutputUtils.print("Dadi: D10: " + risultato);
-        } else {
-            risultato = Dices.tira(8);
-            OutputUtils.print("Dadi: D8: " + risultato);
-        }
-        return risultato;
-    }
-
-    // --- ARMI CON D8 FISSO ---
-    public static int flagello() {
-        int risultato = Dices.tira(8);
-        OutputUtils.print("Dadi: D8: " + risultato);
-        return risultato;
-    }
-
-    public static int picconeGuerra() {
-        int risultato = Dices.tira(8);
-        OutputUtils.print("Dadi: D8: " + risultato);
-        return risultato;
-    }
-
-    public static int stocco() {
-        int risultato = Dices.tira(8);
-        OutputUtils.print("Dadi: D8: " + risultato);
-        return risultato;
-    }
-
-    // --- ARMI CON D10 ---
-    public static int alabarda() {
-        int risultato = Dices.tira(10);
-        OutputUtils.print("Dadi: D10: " + risultato);
-        return risultato;
-    }
-
-    public static int picca() {
-        int risultato = Dices.tira(10);
-        OutputUtils.print("Dadi: D10: " + risultato);
-        return risultato;
-    }
-
-    public static int lanciaGiostra() {
-        int risultato = Dices.tira(10);
-        OutputUtils.print("Dadi: D10: " + risultato);
-        return risultato;
-    }
-
-    // --- ARMI CON D12 ---
-    public static int asciaDueMani() {
-        int risultato = Dices.tira(12);
-        OutputUtils.print("Dadi: D12: " + risultato);
-        return risultato;
-    }
-
-    // --- ARMI CON 2D6 ---
-    public static int spadone() {
-        int d1 = Dices.tira(6);
-        int d2 = Dices.tira(6);
-        OutputUtils.print("Dadi: D6: " + d1 + "  D6: " + d2);
-        return d1 + d2;
-    }
-
-    public static int falcione() {
-        int d1 = Dices.tira(6);
-        int d2 = Dices.tira(6);
-        OutputUtils.print("Dadi: D6: " + d1 + "  D6: " + d2);
-        return d1 + d2;
-    }
-
-    // TIRA DANNO ARMA - legge l'arma dal personaggio e chiama il metodo giusto
     public static int tiraDannoArma(String arma) {
         switch (arma.toLowerCase()) {
-            case "pugnale":        return pugnale();
-            case "scimitarra":     return scimitarra();
-            case "spadacorta":     return spadaCorta();
-            case "asciaguerra":    return asciaGuerra();
-            case "flagello":       return flagello();
-            case "lancia":         return lancia();
-            case "spadalunga":     return spadaLunga();
-            case "martelloguerra": return martelloGuerra();
-            case "picconeguerra":  return picconeGuerra();
-            case "stocco":         return stocco();
-            case "alabarda":       return alabarda();
-            case "picca":          return picca();
-            case "lanciagiostra":  return lanciaGiostra();
-            case "asciaduemani":   return asciaDueMani();
-            case "spadone":        return spadone();
-            default:               return falcione();
+            case "pugnale":        return danno1d(4, "D4");
+            case "scimitarra":     return danno1d(6, "D6");
+            case "spadacorta":     return danno1d(6, "D6");
+            case "flagello":       return danno1d(8, "D8");
+            case "picconeduerra":  return danno1d(8, "D8");
+            case "stocco":         return danno1d(8, "D8");
+            case "alabarda":       return danno1d(10, "D10");
+            case "asciaguerra":    return dannoVersatile("ascia", 8, 10);
+            case "lancia":         return dannoVersatile("lancia", 6, 8);
+            case "spadalunga":     return dannoVersatile("spada", 8, 10);
+            case "martelloguerra": return dannoVersatile("martello", 8, 10);
+            case "spadone":        return danno2d(6, "2D6");
+            case "falcione":       return danno2d(6, "2D6");
+            default:               return danno1d(6, "D6"); // fallback
         }
+    }
+
+    private static int danno1d(int facce, String label) {
+        int r = Dices.tira(facce);
+        OutputUtils.print("Dado danno [" + label + "]: " + r);
+        return r;
+    }
+
+    private static int danno2d(int facce, String label) {
+        int d1 = Dices.tira(facce);
+        int d2 = Dices.tira(facce);
+        OutputUtils.print("Dadi danno [" + label + "]: " + d1 + " + " + d2 + " = " + (d1 + d2));
+        return d1 + d2;
+    }
+
+    private static int dannoVersatile(String nomeArma, int facce1, int facce2) {
+        System.out.print("Usi " + nomeArma + " a una o due mani? (1/2): ");
+        int mani = Console.readInt();
+        if (mani == 2) return danno1d(facce2, "D" + facce2);
+        else           return danno1d(facce1, "D" + facce1);
+    }
+
+    public static boolean armaValida(String arma) {
+        return arma.equalsIgnoreCase("Pugnale")        ||
+                arma.equalsIgnoreCase("Scimitarra")     ||
+                arma.equalsIgnoreCase("SpadaCorta")     ||
+                arma.equalsIgnoreCase("AsciaGuerra")    ||
+                arma.equalsIgnoreCase("Flagello")       ||
+                arma.equalsIgnoreCase("Lancia")         ||
+                arma.equalsIgnoreCase("SpadaLunga")     ||
+                arma.equalsIgnoreCase("MartelloGuerra") ||
+                arma.equalsIgnoreCase("PicconeGuerra")  ||
+                arma.equalsIgnoreCase("Stocco")         ||
+                arma.equalsIgnoreCase("Alabarda")       ||
+                arma.equalsIgnoreCase("Spadone")        ||
+                arma.equalsIgnoreCase("Falcione");
     }
 }

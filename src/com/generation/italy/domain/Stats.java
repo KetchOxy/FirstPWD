@@ -1,148 +1,89 @@
 package com.generation.italy.domain;
 
 import com.generation.italy.utils.OutputUtils;
-import com.generation.library.*;
+import com.generation.library.Console;
 
-// CARATTERISTICHE PERSONAGGIO - inserimento FOR, DES, COS, INT, SAG, CAR
+/**
+ * STATS - Gestisce l'assegnazione delle statistiche del personaggio (Point Buy).
+ */
 public class Stats {
 
     public static void assegna(Player pg) {
+        int puntiTotali = 27;
 
-        int PuntiTotali = 27;
-
-        OutputUtils.print("Hai tutte le caratteristiche ad 8, e 27 punti disponibili.");
-        OutputUtils.print("Incrementa le tue caratteristiche fino ad un massimo di 15.");
+        OutputUtils.print("\n=== Assegna le Caratteristiche (Point Buy) ===");
+        OutputUtils.print("Tutte le stat partono da 8. Hai " + puntiTotali + " punti da distribuire (max 15 per stat).");
         OutputUtils.print();
 
-        // FORZA
-        do {
-            System.out.print("Forza (8-15, punti rimasti: " + PuntiTotali + "): ");
-            pg.forza = Console.readInt();
-            if (pg.forza < 8 || pg.forza > 15) OutputUtils.print("Valore non valido! Scegli tra 8 e 15.");
-            else if (pg.forza - 8 > PuntiTotali) OutputUtils.print("Punti insufficienti!");
-        } while (pg.forza < 8 || pg.forza > 15 || pg.forza - 8 > PuntiTotali);
-        PuntiTotali -= (pg.forza - 8);
+        pg.setForza(chiediStat("Forza",        puntiTotali, pg)); puntiTotali -= (pg.getForza() - 8);
+        pg.setDestrezza(chiediStat("Destrezza",    puntiTotali, pg)); puntiTotali -= (pg.getDestrezza() - 8);
+        pg.setCostituzione(chiediStat("Costituzione", puntiTotali, pg)); puntiTotali -= (pg.getCostituzione() - 8);
+        pg.setIntelligenza(chiediStat("Intelligenza", puntiTotali, pg)); puntiTotali -= (pg.getIntelligenza() - 8);
+        pg.setSaggezza(chiediStat("Saggezza",      puntiTotali, pg)); puntiTotali -= (pg.getSaggezza() - 8);
+        pg.setCarisma(chiediStat("Carisma",       puntiTotali, pg)); puntiTotali -= (pg.getCarisma() - 8);
 
-        // DESTREZZA
-        do {
-            System.out.print("Destrezza (8-15, punti rimasti: " + PuntiTotali + "): ");
-            pg.destrezza = Console.readInt();
-            if (pg.destrezza < 8 || pg.destrezza > 15) OutputUtils.print("Valore non valido! Scegli tra 8 e 15.");
-            else if (pg.destrezza - 8 > PuntiTotali) OutputUtils.print("Punti insufficienti!");
-        } while (pg.destrezza < 8 || pg.destrezza > 15 || pg.destrezza - 8 > PuntiTotali);
-        PuntiTotali -= (pg.destrezza - 8);
-
-        // COSTITUZIONE
-        do {
-            System.out.print("Costituzione (8-15, punti rimasti: " + PuntiTotali + "): ");
-            pg.costituzione = Console.readInt();
-            if (pg.costituzione < 8 || pg.costituzione > 15) OutputUtils.print("Valore non valido! Scegli tra 8 e 15.");
-            else if (pg.costituzione - 8 > PuntiTotali) OutputUtils.print("Punti insufficienti!");
-        } while (pg.costituzione < 8 || pg.costituzione > 15 || pg.costituzione - 8 > PuntiTotali);
-        PuntiTotali -= (pg.costituzione - 8);
-
-        // INTELLIGENZA
-        do {
-            System.out.print("Intelligenza (8-15, punti rimasti: " + PuntiTotali + "): ");
-            pg.intelligenza = Console.readInt();
-            if (pg.intelligenza < 8 || pg.intelligenza > 15) OutputUtils.print("Valore non valido! Scegli tra 8 e 15.");
-            else if (pg.intelligenza - 8 > PuntiTotali) OutputUtils.print("Punti insufficienti!");
-        } while (pg.intelligenza < 8 || pg.intelligenza > 15 || pg.intelligenza - 8 > PuntiTotali);
-        PuntiTotali -= (pg.intelligenza - 8);
-
-        // SAGGEZZA
-        do {
-            System.out.print("Saggezza (8-15, punti rimasti: " + PuntiTotali + "): ");
-            pg.saggezza = Console.readInt();
-            if (pg.saggezza < 8 || pg.saggezza > 15) OutputUtils.print("Valore non valido! Scegli tra 8 e 15.");
-            else if (pg.saggezza - 8 > PuntiTotali) OutputUtils.print("Punti insufficienti!");
-        } while (pg.saggezza < 8 || pg.saggezza > 15 || pg.saggezza - 8 > PuntiTotali);
-        PuntiTotali -= (pg.saggezza - 8);
-
-        // CARISMA
-        do {
-            System.out.print("Carisma (8-15, punti rimasti: " + PuntiTotali + "): ");
-            pg.carisma = Console.readInt();
-            if (pg.carisma < 8 || pg.carisma > 15) OutputUtils.print("Valore non valido! Scegli tra 8 e 15.");
-            else if (pg.carisma - 8 > PuntiTotali) OutputUtils.print("Punti insufficienti!");
-        } while (pg.carisma < 8 || pg.carisma > 15 || pg.carisma - 8 > PuntiTotali);
-        PuntiTotali -= (pg.carisma - 8);
-
-        // RIASSEGNAZIONE PUNTI RIMASTI
-        while (PuntiTotali > 0) {
-            OutputUtils.print("Ti sono rimasti " + PuntiTotali + " punti! A quale caratteristica vuoi aggiungerli?");
-            OutputUtils.print("1. Forza        (attuale: " + pg.forza + ")");
-            OutputUtils.print("2. Destrezza    (attuale: " + pg.destrezza + ")");
-            OutputUtils.print("3. Costituzione (attuale: " + pg.costituzione + ")");
-            OutputUtils.print("4. Intelligenza (attuale: " + pg.intelligenza + ")");
-            OutputUtils.print("5. Saggezza     (attuale: " + pg.saggezza + ")");
-            OutputUtils.print("6. Carisma      (attuale: " + pg.carisma + ")");
-            int scelta = Console.readInt();
-
-            switch (scelta) {
-                case 1:
-                    if (pg.forza < 15) { pg.forza++; PuntiTotali--; }
-                    else OutputUtils.print("Caratteristica gia' al massimo!");
-                    break;
-                case 2:
-                    if (pg.destrezza < 15) { pg.destrezza++; PuntiTotali--; }
-                    else OutputUtils.print("Caratteristica gia' al massimo!");
-                    break;
-                case 3:
-                    if (pg.costituzione < 15) { pg.costituzione++; PuntiTotali--; }
-                    else OutputUtils.print("Caratteristica gia' al massimo!");
-                    break;
-                case 4:
-                    if (pg.intelligenza < 15) { pg.intelligenza++; PuntiTotali--; }
-                    else OutputUtils.print("Caratteristica gia' al massimo!");
-                    break;
-                case 5:
-                    if (pg.saggezza < 15) { pg.saggezza++; PuntiTotali--; }
-                    else OutputUtils.print("Caratteristica gia' al massimo!");
-                    break;
-                case 6:
-                    if (pg.carisma < 15) { pg.carisma++; PuntiTotali--; }
-                    else OutputUtils.print("Caratteristica gia' al massimo!");
-                    break;
-                default:
-                    OutputUtils.print("Scelta non valida!");
+        // Redistribuisci eventuali punti rimasti
+        while (puntiTotali > 0) {
+            OutputUtils.print("\nHai ancora " + puntiTotali + " punti! A quale stat aggiungerli?");
+            OutputUtils.print("1.Forza(" + pg.getForza() + ") 2.Des(" + pg.getDestrezza() + ") 3.Cos(" + pg.getCostituzione()
+                    + ") 4.Int(" + pg.getIntelligenza() + ") 5.Sag(" + pg.getSaggezza() + ") 6.Car(" + pg.getCarisma() + ")");
+            int s = Console.readInt();
+            switch (s) {
+                case 1: if (pg.getForza() < 15)       { pg.setForza(pg.getForza() + 1);             puntiTotali--; } else OutputUtils.print("Già al massimo!"); break;
+                case 2: if (pg.getDestrezza() < 15)   { pg.setDestrezza(pg.getDestrezza() + 1);     puntiTotali--; } else OutputUtils.print("Già al massimo!"); break;
+                case 3: if (pg.getCostituzione() < 15){ pg.setCostituzione(pg.getCostituzione()+1); puntiTotali--; } else OutputUtils.print("Già al massimo!"); break;
+                case 4: if (pg.getIntelligenza() < 15){ pg.setIntelligenza(pg.getIntelligenza()+1); puntiTotali--; } else OutputUtils.print("Già al massimo!"); break;
+                case 5: if (pg.getSaggezza() < 15)    { pg.setSaggezza(pg.getSaggezza() + 1);       puntiTotali--; } else OutputUtils.print("Già al massimo!"); break;
+                case 6: if (pg.getCarisma() < 15)     { pg.setCarisma(pg.getCarisma() + 1);         puntiTotali--; } else OutputUtils.print("Già al massimo!"); break;
+                default: OutputUtils.print("Scelta non valida.");
             }
         }
 
-        // RIEPILOGO PERSONAGGIO - BUG FIX: COS usava pg.intelligenza
+        stampaScheda(pg);
+    }
+
+    private static int chiediStat(String nomeStat, int puntiRimasti, Player pg) {
+        int valore;
+        do {
+            System.out.print(nomeStat + " (8-15, punti rimasti: " + puntiRimasti + "): ");
+            valore = Console.readInt();
+            if (valore < 8 || valore > 15)     OutputUtils.print("Valore non valido! Scegli tra 8 e 15.");
+            else if (valore - 8 > puntiRimasti) OutputUtils.print("Punti insufficienti!");
+        } while (valore < 8 || valore > 15 || valore - 8 > puntiRimasti);
+        return valore;
+    }
+
+    public static void stampaScheda(Player pg) {
         OutputUtils.print();
         OutputUtils.print("=== Scheda Personaggio ===");
-        OutputUtils.print("Nome:   " + pg.nome);
-        OutputUtils.print("Specie: " + pg.specie);
-        OutputUtils.print("Classe: " + pg.classe);
-        OutputUtils.print("PF:     " + pg.puntiFerita);
-        OutputUtils.print("CA:     " + pg.classeArmatura);
-        OutputUtils.print("FOR: " + pg.forza + " (mod: " + Player.calcolaModificatore(pg.forza) + ")");
-        OutputUtils.print("DES: " + pg.destrezza + " (mod: " + Player.calcolaModificatore(pg.destrezza) + ")");
-        OutputUtils.print("COS: " + pg.costituzione + " (mod: " + Player.calcolaModificatore(pg.costituzione) + ")");
-        OutputUtils.print("INT: " + pg.intelligenza + " (mod: " + Player.calcolaModificatore(pg.intelligenza) + ")");
-        OutputUtils.print("SAG: " + pg.saggezza + " (mod: " + Player.calcolaModificatore(pg.saggezza) + ")");
-        OutputUtils.print("CAR: " + pg.carisma + " (mod: " + Player.calcolaModificatore(pg.carisma) + ")");
+        OutputUtils.print("Nome:   " + pg.getNome());
+        OutputUtils.print("Specie: " + pg.getSpecie());
+        OutputUtils.print("Classe: " + pg.getClasse());
+        OutputUtils.print("Arma:   " + pg.getArma());
+        OutputUtils.print("PF:     " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
+        OutputUtils.print("CA:     " + pg.getClasseArmatura());
+        OutputUtils.print("FOR: " + pg.getForza() + " (mod: " + pg.getModForza() + ")");
+        OutputUtils.print("DES: " + pg.getDestrezza() + " (mod: " + pg.getModDestrezza() + ")");
+        OutputUtils.print("COS: " + pg.getCostituzione() + " (mod: " + pg.getModCostituzone() + ")");
+        OutputUtils.print("INT: " + pg.getIntelligenza() + " (mod: " + pg.getModIntelligenza() + ")");
+        OutputUtils.print("SAG: " + pg.getSaggezza() + " (mod: " + pg.getModSaggezza() + ")");
+        OutputUtils.print("CAR: " + pg.getCarisma() + " (mod: " + pg.getModCarisma() + ")");
         OutputUtils.print();
     }
 
     public static int scegliModificatore(Player pg) {
         OutputUtils.print("Quale caratteristica usi?");
-        OutputUtils.print("1. Forza        (mod: " + Player.calcolaModificatore(pg.forza) + ")");
-        OutputUtils.print("2. Destrezza    (mod: " + Player.calcolaModificatore(pg.destrezza) + ")");
-        OutputUtils.print("3. Costituzione (mod: " + Player.calcolaModificatore(pg.costituzione) + ")");
-        OutputUtils.print("4. Intelligenza (mod: " + Player.calcolaModificatore(pg.intelligenza) + ")");
-        OutputUtils.print("5. Saggezza     (mod: " + Player.calcolaModificatore(pg.saggezza) + ")");
-        OutputUtils.print("6. Carisma      (mod: " + Player.calcolaModificatore(pg.carisma) + ")");
-        int sceltaStat = Console.readInt();
-
-        switch (sceltaStat) {
-            case 1: return Player.calcolaModificatore(pg.forza);
-            case 2: return Player.calcolaModificatore(pg.destrezza);
-            case 3: return Player.calcolaModificatore(pg.costituzione);
-            case 4: return Player.calcolaModificatore(pg.intelligenza);
-            case 5: return Player.calcolaModificatore(pg.saggezza);
-            default: return Player.calcolaModificatore(pg.carisma);
+        OutputUtils.print("1.FOR(" + pg.getModForza() + ") 2.DES(" + pg.getModDestrezza()
+                + ") 3.COS(" + pg.getModCostituzone() + ") 4.INT(" + pg.getModIntelligenza()
+                + ") 5.SAG(" + pg.getModSaggezza() + ") 6.CAR(" + pg.getModCarisma() + ")");
+        int s = Console.readInt();
+        switch (s) {
+            case 1: return pg.getModForza();
+            case 2: return pg.getModDestrezza();
+            case 3: return pg.getModCostituzone();
+            case 4: return pg.getModIntelligenza();
+            case 5: return pg.getModSaggezza();
+            default: return pg.getModCarisma();
         }
     }
 }

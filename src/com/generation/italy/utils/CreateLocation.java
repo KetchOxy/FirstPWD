@@ -1,77 +1,59 @@
 package com.generation.italy.utils;
 
-import com.generation.italy.domain.Location;
-import com.generation.library.Console;
 import com.generation.italy.domain.Player;
+import com.generation.italy.world.DungeonBuilder;
+import com.generation.italy.world.Room;
+import com.generation.library.Console;
+
+/**
+ * CREATE LOCATION - Permette al giocatore di scegliere il prossimo dungeon.
+ */
 public class CreateLocation {
 
-    public static Location scegli(Player pg) {
-        OutputUtils.print("=== Scegli la Location ===");
-        OutputUtils.print("1. Dungeon     - Corridoi bui e trappole. Nemico: Scheletro");
-        OutputUtils.print("2. Foresta     - Alberi fitti e sentieri nascosti. Nemico: Lupo");
-        OutputUtils.print("3. Taverna     - Ambiente caotico e rumoroso. Nemico: Bandito");
-        OutputUtils.print("4. Cripta      - Silenzio e oscurita' totale. Nemico: Zombi");
-        OutputUtils.print("5. Montagna    - Vento gelido e rocce scivolose. Nemico: Orco");
+    public static Room[] scegli(Player pg) {
+        OutputUtils.print("\n=== Scegli la Prossima Location ===");
+        OutputUtils.print("1. Dungeon  - Corridoi bui. Nemico: Scheletro. Bonus: Nano");
+        OutputUtils.print("2. Foresta  - Alberi fitti. Nemico: Lupo.      Bonus: Ranger");
+        OutputUtils.print("3. Taverna  - Caos e fumo.  Nemico: Bandito.   Bonus: Ladro");
+        OutputUtils.print("4. Cripta   - Silenzio.     Nemico: Zombi.     Bonus: Chierico");
+        OutputUtils.print("5. Montagna - Vento gelido. Nemico: Orco.      Bonus: Barbaro");
         System.out.print("Scelta: ");
         int scelta = Console.readInt();
 
-        Location loc = new Location();
-
+        String nomeDungeon, nomeNemico, bonusClasse;
         switch (scelta) {
-            case 1:
-                loc.nome = "Dungeon";
-                loc.descrizione = "Corridoi bui, trappole ovunque e l'eco di passi lontani.";
-                loc.nomeNemico = "Scheletro";
-                loc.bonusClasse = "Nano";
-                loc.bonusColpire = true;
-                loc.bonusDanno = false;
-                break;
-            case 2:
-                loc.nome = "Foresta";
-                loc.descrizione = "Alberi fitti, fitta vegetazione e ombre che si muovono rapide.";
-                loc.nomeNemico = "Lupo";
-                loc.bonusClasse = "Ranger";
-                loc.bonusColpire = true;
-                loc.bonusDanno = false;
-                break;
-            case 3:
-                loc.nome = "Taverna";
-                loc.descrizione = "Fumo, alcol e sguardi poco rassicuranti da ogni angolo.";
-                loc.nomeNemico = "Bandito";
-                loc.bonusClasse = "Ladro";
-                loc.bonusColpire = true;
-                loc.bonusDanno = false;
-                break;
-            case 4:
-                loc.nome = "Cripta";
-                loc.descrizione = "Silenzio assoluto, odore di muffa e ossa che scricchiolano.";
-                loc.nomeNemico = "Zombi";
-                loc.bonusClasse = "Chierico";
-                loc.bonusColpire = false;
-                loc.bonusDanno = true;
-                break;
-            default:
-                loc.nome = "Montagna";
-                loc.descrizione = "Vento gelido, rocce scivolose e un ruggito in lontananza.";
-                loc.nomeNemico = "Orco";
-                loc.bonusClasse = "Barbaro";
-                loc.bonusColpire = false;
-                loc.bonusDanno = true;
-                break;
+            case 1: nomeDungeon = "Dungeon";  nomeNemico = "Scheletro"; bonusClasse = "Nano";     break;
+            case 2: nomeDungeon = "Foresta";  nomeNemico = "Lupo";      bonusClasse = "Ranger";   break;
+            case 3: nomeDungeon = "Taverna";  nomeNemico = "Bandito";   bonusClasse = "Ladro";    break;
+            case 4: nomeDungeon = "Cripta";   nomeNemico = "Zombi";     bonusClasse = "Chierico"; break;
+            default: nomeDungeon = "Montagna"; nomeNemico = "Orco";     bonusClasse = "Barbaro";  break;
         }
 
-        OutputUtils.print();
-        OutputUtils.print("Sei entrato in: " + loc.nome);
-        if (pg.classe.equalsIgnoreCase(loc.bonusClasse)) {
-            OutputUtils.print("\n*** BONUS! La tua classe " + pg.classe + " ha una grande familiarita' con " + loc.nome + "! ***");
+        if (pg.getClasse().equalsIgnoreCase(bonusClasse)) {
+            OutputUtils.print("\n*** BONUS! La tua classe " + pg.getClasse() + " ha familiarità con " + nomeDungeon + "! +2 danni in combattimento! ***");
         }
-        return loc;
+
+        Room ingresso = DungeonBuilder.costruisci(nomeDungeon, nomeNemico, bonusClasse);
+        return new Room[]{ ingresso };  // [0] = ingresso; bonusClasse via World
     }
 
-    // NUOVO METODO: Gestisce la domanda sul cambio di dungeon
+    public static String scegliGetBonus(Player pg) {
+        // Metodo helper per recuperare il bonusClasse dalla scelta
+        OutputUtils.print("\n=== Scegli la Prossima Location ===");
+        OutputUtils.print("1.Dungeon(Nano) 2.Foresta(Ranger) 3.Taverna(Ladro) 4.Cripta(Chierico) 5.Montagna(Barbaro)");
+        System.out.print("Scelta: ");
+        int scelta = Console.readInt();
+        switch (scelta) {
+            case 1: return "Nano";
+            case 2: return "Ranger";
+            case 3: return "Ladro";
+            case 4: return "Chierico";
+            default: return "Barbaro";
+        }
+    }
+
     public static boolean richiediNuovoViaggio() {
-        System.out.print("Sei pronto a metterti in viaggio verso una NUOVA LOCATION? (s/n): ");
-        String risposta = Console.readString();
-        return risposta.equalsIgnoreCase("s");
+        System.out.print("Sei pronto a partire verso una NUOVA LOCATION? (s/n): ");
+        return Console.readString().equalsIgnoreCase("s");
     }
 }
