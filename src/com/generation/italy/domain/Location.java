@@ -23,7 +23,14 @@ public class Location {
         OutputUtils.print("=============================================");
 
         for (int stanza = 1; stanza <= 3; stanza++) {
-            if (pg.puntiFerita <= 0) break;
+            if (pg.getPuntiFerita() <= 0) break;
+
+            // INVENTARIO — sempre disponibile prima di ogni stanza
+            OutputUtils.print("\nVuoi aprire l'inventario prima di entrare? (s/n): ");
+            String apriInv = Console.readString();
+            if (apriInv.equalsIgnoreCase("s")) {
+                pg.mostraInventario();
+            }
 
             OutputUtils.print("\n-------------------------------------------");
 
@@ -44,7 +51,7 @@ public class Location {
             }
 
             // Ricompensa in oro e riposo intermedio (Gestito all'interno della stanza)
-            if (pg.puntiFerita > 0) {
+            if (pg.getPuntiFerita() > 0) {
                 int moneteTrovate = Dices.tira(10) + 5;
                 pg.oro += moneteTrovate;
                 OutputUtils.print("Trovi comunque " + moneteTrovate + " monete d'oro nascoste nella stanza! (Oro totale: " + pg.oro + ")");
@@ -57,7 +64,7 @@ public class Location {
                     String sceltaAvanti = Console.readString();
                     if (!sceltaAvanti.equalsIgnoreCase("s")) {
                         OutputUtils.print("Scappi terrorizzato dal dungeon abbandonando la missione!");
-                        pg.puntiFerita = 0; // Escamotage per interrompere l'avventura o puoi gestire un flag
+                        pg.setCurrentHp(0); // Escamotage per interrompere l'avventura o puoi gestire un flag
                         break;
                     }
                 }

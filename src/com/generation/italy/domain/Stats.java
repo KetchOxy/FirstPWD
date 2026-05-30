@@ -109,21 +109,7 @@ public class Stats {
             }
         }
 
-        // RIEPILOGO PERSONAGGIO - BUG FIX: COS usava pg.intelligenza
-        OutputUtils.print();
-        OutputUtils.print("=== Scheda Personaggio ===");
-        OutputUtils.print("Nome:   " + pg.nome);
-        OutputUtils.print("Specie: " + pg.specie);
-        OutputUtils.print("Classe: " + pg.classe);
-        OutputUtils.print("PF:     " + pg.puntiFerita);
-        OutputUtils.print("CA:     " + pg.classeArmatura);
-        OutputUtils.print("FOR: " + pg.forza + " (mod: " + Player.calcolaModificatore(pg.forza) + ")");
-        OutputUtils.print("DES: " + pg.destrezza + " (mod: " + Player.calcolaModificatore(pg.destrezza) + ")");
-        OutputUtils.print("COS: " + pg.costituzione + " (mod: " + Player.calcolaModificatore(pg.costituzione) + ")");
-        OutputUtils.print("INT: " + pg.intelligenza + " (mod: " + Player.calcolaModificatore(pg.intelligenza) + ")");
-        OutputUtils.print("SAG: " + pg.saggezza + " (mod: " + Player.calcolaModificatore(pg.saggezza) + ")");
-        OutputUtils.print("CAR: " + pg.carisma + " (mod: " + Player.calcolaModificatore(pg.carisma) + ")");
-        OutputUtils.print();
+
     }
 
     public static int scegliModificatore(Player pg) {

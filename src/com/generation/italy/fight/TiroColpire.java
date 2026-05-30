@@ -49,8 +49,8 @@ public class TiroColpire {
                 OutputUtils.print("Hai mancato!");
                 return 0;
             } else {
-                OutputUtils.print("Hai colpito! Arma: " + pg.arma);
-                int danno = Weapons.tiraDannoArma(pg.arma);
+                OutputUtils.print("Hai colpito! Arma: " + pg.getArma());
+                int danno = Weapons.tiraDannoArma(pg.getArma());
 
                 if (tiroBase == 20) {
                     danno = danno * 2;

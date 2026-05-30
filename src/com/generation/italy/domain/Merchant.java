@@ -11,7 +11,7 @@ public class Merchant {
         boolean inNegozio = true;
         while (inNegozio) {
             OutputUtils.print("--- BOTTEGA DEL MERCANTE ---");
-            OutputUtils.print("Oro attuale: " + pg.oro + " | Pozioni possedute: " + pg.numeroPozioni + " | PF: " + pg.puntiFerita + "/" + pg.puntiFeritaMax);
+            OutputUtils.print("Oro attuale: " + pg.oro + " | Pozioni possedute: " + pg.numeroPozioni + " | PF: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
             OutputUtils.print("1. Compra Pozione di Cura (Costo: 20 monete)");
             OutputUtils.print("2. Lascia il negozio e pianifica il prossimo Dungeon");
             System.out.print("Cosa vuoi fare? ");

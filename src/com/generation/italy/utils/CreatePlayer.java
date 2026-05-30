@@ -1,19 +1,18 @@
 package com.generation.italy.utils;
 
 import com.generation.italy.domain.Player;
+import com.generation.italy.domain.Weapon;
 import com.generation.library.*;
 
-// CREAZIONE PERSONAGGIO - gestisce nome, specie, classe, arma, PF e CA
 public class CreatePlayer {
 
     public static Player crea() {
 
-        Player pg = new Player();
-
         OutputUtils.print("=== Creazione Personaggio ===");
 
         System.out.print("Nome del personaggio: ");
-        pg.nome = Console.readString();
+        String nome = Console.readString();
+        Player pg = new Player(nome, 1, 1);
 
         // SPECIE CON VALIDAZIONE
         System.out.print("Specie (Umano, Elfo, Nano, Halfling, Dragonborn, Gnomo, Tiefling, Orco, Goliath, Aasimar): ");
@@ -32,24 +31,6 @@ public class CreatePlayer {
             System.out.print("Classe: ");
             pg.classe = Console.readString();
         }
-
-        // ARMA CON VALIDAZIONE
-        System.out.print("Scegli l'arma da mischia: (1.Pugnale\n2.Scimitarra\n3.SpadaCorta\n4.AsciaGuerra\n5.Flagello\n6.Lancia\n7.SpadaLunga\n8.MartelloGuerra\n9.PicconeGuerra\n10.Stocco\n11.Alabarda\n12.Spadone\n13.Falcione)");
-        pg.arma = Console.readString();
-        while (armaValida(pg.arma) == false) {
-            OutputUtils.print("Arma non valida o non presente nel manuale! Riprova.");
-            System.out.print("Arma: ");
-            pg.arma = Console.readString();
-        }
-
-        // PUNTI FERITA E CLASSE ARMATURA
-        System.out.print("Punti Ferita: ");
-        pg.puntiFerita = Console.readInt();
-        pg.puntiFeritaMax = pg.puntiFerita; // <-- NUOVA: Copia il valore massimo iniziale
-
-        System.out.print("Classe Armatura (CA): ");
-        pg.classeArmatura = Console.readInt();
-
         return pg;
     }
 

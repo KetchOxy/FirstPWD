@@ -14,16 +14,16 @@ public class Combat {
 
         OutputUtils.print("=== Simulatore dadi D&D ===");
 
-        while (pg.puntiFerita > 0 && nemico.puntiFerita > 0) {
+        while (pg.getPuntiFerita() > 0 && nemico.puntiFerita > 0) {
 
             OutputUtils.print("----------------------------------");
-            OutputUtils.print(pg.nome + " PF: " + pg.puntiFerita + "/" + pg.puntiFeritaMax + " (Pozioni: " + pg.numeroPozioni + ") | " + nemico.nome + " PF: " + nemico.puntiFerita + "/" + pfMostroIniziali);
+            OutputUtils.print(pg.getNome() + " PF: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax() + " (Pozioni: " + pg.numeroPozioni + ") | " + nemico.nome + " PF: " + nemico.puntiFerita + "/" + pfMostroIniziali);
             OutputUtils.print("----------------------------------");
 
             // TURNO DEL GIOCATORE
             OutputUtils.print(">>> Il tuo turno <<<");
             OutputUtils.print("Che tipo di azione vuoi fare?");
-            OutputUtils.print("1. Tiro per colpire (Attacca con " + pg.arma + ")");
+            OutputUtils.print("1. Tiro per colpire (Attacca con " + pg.getArma() + ")");
             OutputUtils.print("2. Usa Pozione di Cura (Rimanenti: " + pg.numeroPozioni + ")");
             System.out.print("Scelta: ");
             int sceltaAzione = Console.readInt();
@@ -32,7 +32,7 @@ public class Combat {
                 String statoTiro = "no";
 
                 // Vantaggio e svantaggio automatici legati alle ferite
-                if (pg.puntiFerita < (pg.puntiFeritaMax / 2.0)) {
+                if (pg.getPuntiFerita() < (pg.getPuntiFeritaMax() / 2.0)) {
                     OutputUtils.print("[STATO: FERITO GRAVEMENTE] Attacchi con SVANTAGGIO!");
                     statoTiro = "s";
                 }
@@ -58,7 +58,7 @@ public class Combat {
                     OutputUtils.print("Bevi una pozione di cura!");
                     pg.riceviCura(cura);
                     pg.numeroPozioni--;
-                    OutputUtils.print("I tuoi nuovi PF: " + pg.puntiFerita + "/" + pg.puntiFeritaMax);
+                    OutputUtils.print("I tuoi nuovi PF: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
                 } else {
                     OutputUtils.print("Frughi nello zaino, ma non hai più pozioni! Perdi il turno!");
                 }
@@ -86,9 +86,9 @@ public class Combat {
                         if (tiroNemico == 20) OutputUtils.print("*** CRITICO del nemico! ***");
                         int dannoNemico = Weapons.tiraDannoArma(nemico.arma);
                         if (tiroNemico == 20) dannoNemico *= 2;
-                        pg.puntiFerita -= dannoNemico;
+                        pg.setCurrentHp(pg.getPuntiFerita() - dannoNemico);
                         OutputUtils.print(nemico.nome + " ti ha colpito per " + dannoNemico + " danni!");
-                        OutputUtils.print("I tuoi PF: " + pg.puntiFerita + "/" + pg.puntiFeritaMax);
+                        OutputUtils.print("I tuoi PF: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
                     }
                 }
             }
@@ -96,7 +96,7 @@ public class Combat {
 
         // FINE COMBATTIMENTO
         OutputUtils.print("==================================");
-        if (pg.puntiFerita <= 0) {
+        if (pg.getPuntiFerita() <= 0) {
             OutputUtils.print("Sei stato sconfitto da " + nemico.nome + "...");
             OutputUtils.print("GAME OVER");
         } else {

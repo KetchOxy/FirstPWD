@@ -3,6 +3,7 @@ package com.generation.italy.utils;
 import com.generation.italy.domain.Player;
 import com.generation.italy.fight.TiroAbilita;
 import com.generation.library.Console;
+import com.generation.italy.utils.Dices;
 
 public class RoomEvent {
 
@@ -50,10 +51,10 @@ public class RoomEvent {
             OutputUtils.print("Hai schivato i dardi millimetricamente senza subire danni!");
         } else {
             int danniTrappola = Dices.tira(6) + 2; // 1d6 + 2 danni
-            pg.puntiFerita -= danniTrappola;
+            pg.setCurrentHp(pg.getPuntiFerita() - danniTrappola);
             OutputUtils.print("Sei stato colpito dai dardi! Subisci " + danniTrappola + " danni da trappola.");
-            if (pg.puntiFerita < 0) pg.puntiFerita = 0;
-            OutputUtils.print("I tuoi PF attuali: " + pg.puntiFerita + "/" + pg.puntiFeritaMax);
+            if (pg.getPuntiFerita() < 0) pg.setCurrentHp(0);
+            OutputUtils.print("I tuoi PF attuali: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
         }
     }
 }
