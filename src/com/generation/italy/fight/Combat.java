@@ -5,7 +5,6 @@ import com.generation.italy.domain.Location;
 import com.generation.italy.domain.Player;
 import com.generation.italy.utils.Dices;
 import com.generation.italy.utils.OutputUtils;
-import com.generation.italy.utils.Weapons;
 import com.generation.library.Console;
 
 public class Combat {
@@ -14,10 +13,10 @@ public class Combat {
 
         OutputUtils.print("=== Simulatore dadi D&D ===");
 
-        while (pg.getPuntiFerita() > 0 && nemico.puntiFerita > 0) {
+        while (pg.getPuntiFerita() > 0 && nemico.getCurrentHp() > 0) {
 
             OutputUtils.print("----------------------------------");
-            OutputUtils.print(pg.getNome() + " PF: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax() + " (Pozioni: " + pg.numeroPozioni + ") | " + nemico.nome + " PF: " + nemico.puntiFerita + "/" + pfMostroIniziali);
+            OutputUtils.print(pg.getNome() + " PF: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax() + " (Pozioni: " + pg.numeroPozioni + ") | " + nemico.getNome() + " PF: " + nemico.getCurrentHp() + "/" + pfMostroIniziali);
             OutputUtils.print("----------------------------------");
 
             // TURNO DEL GIOCATORE
@@ -36,7 +35,7 @@ public class Combat {
                     OutputUtils.print("[STATO: FERITO GRAVEMENTE] Attacchi con SVANTAGGIO!");
                     statoTiro = "s";
                 }
-                else if (nemico.puntiFerita < (pfMostroIniziali / 2.0)) {
+                else if (nemico.getCurrentHp() < (pfMostroIniziali / 2.0)) {
                     OutputUtils.print("[STATO: NEMICO STREMATO] Approfitti del VANTAGGIO!");
                     statoTiro = "v";
                 }
@@ -49,8 +48,8 @@ public class Combat {
                         dannoInflitto += 2;
                         OutputUtils.print("*** Furia della Location! +2 danni bonus! ***");
                     }
-                    nemico.puntiFerita -= dannoInflitto;
-                    OutputUtils.print("Hai fatto " + dannoInflitto + " danni a " + nemico.nome + "!");
+                    nemico.setCurrentHp(nemico.getCurrentHp() - dannoInflitto);
+                    OutputUtils.print("Hai fatto " + dannoInflitto + " danni a " + nemico.getNome() + "!");
                 }
             } else if (sceltaAzione == 2) {
                 if (pg.numeroPozioni > 0) {
@@ -67,11 +66,11 @@ public class Combat {
             }
 
             // TURNO DEL NEMICO
-            if (nemico.puntiFerita > 0) {
+            if (nemico.getCurrentHp() > 0) {
                 OutputUtils.print();
-                OutputUtils.print(">>> Turno di " + nemico.nome + " <<<");
+                OutputUtils.print(">>> Turno di " + nemico.getNome() + " <<<");
                 int tiroNemico = Dices.tira(20);
-                OutputUtils.print(nemico.nome + " tira il d20 per colpire... Risultato base: " + tiroNemico);
+                OutputUtils.print(nemico.getNome() + " tira il d20 per colpire... Risultato base: " + tiroNemico);
 
                 if (tiroNemico == 1) {
                     OutputUtils.print("*** CLAMOROSO FUMBLE del nemico! Inciampa da solo! ***");
@@ -81,13 +80,13 @@ public class Combat {
                     OutputUtils.print("Tiro finale: " + tiroNemico + " + mod(" + modNemico + ") = " + tiroFinaleNemico);
 
                     if (tiroFinaleNemico < pg.classeArmatura && tiroNemico != 20) {
-                        OutputUtils.print(nemico.nome + " ha mancato! La tua CA e': " + pg.classeArmatura);
+                        OutputUtils.print(nemico.getNome() + " ha mancato! La tua CA e': " + pg.classeArmatura);
                     } else {
                         if (tiroNemico == 20) OutputUtils.print("*** CRITICO del nemico! ***");
-                        int dannoNemico = Weapons.tiraDannoArma(nemico.arma);
+                        int dannoNemico = nemico.arma.tiraDanno();
                         if (tiroNemico == 20) dannoNemico *= 2;
                         pg.setCurrentHp(pg.getPuntiFerita() - dannoNemico);
-                        OutputUtils.print(nemico.nome + " ti ha colpito per " + dannoNemico + " danni!");
+                        OutputUtils.print(nemico.getNome() + " ti ha colpito per " + dannoNemico + " danni!");
                         OutputUtils.print("I tuoi PF: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
                     }
                 }
@@ -97,10 +96,10 @@ public class Combat {
         // FINE COMBATTIMENTO
         OutputUtils.print("==================================");
         if (pg.getPuntiFerita() <= 0) {
-            OutputUtils.print("Sei stato sconfitto da " + nemico.nome + "...");
+            OutputUtils.print("Sei stato sconfitto da " + nemico.getNome() + "...");
             OutputUtils.print("GAME OVER");
         } else {
-            OutputUtils.print("Hai sconfitto " + nemico.nome + "! Vittoria!");
+            OutputUtils.print("Hai sconfitto " + nemico.getNome() + "! Vittoria!");
 
         }
     }

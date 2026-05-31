@@ -1,7 +1,5 @@
 package com.generation.italy.domain;
 
-import com.generation.italy.utils.OutputUtils;
-
 public class Armor extends Item {
 
     private boolean indossata;
@@ -19,22 +17,12 @@ public class Armor extends Item {
     public void rimuovi()        { this.indossata = false; }
 
     @Override
-    public boolean usa(Player pg) {
-        pg.indossaArmatura(this);
-        // Ricalcola CA: base 10 + modDES + difesa armatura
-        pg.classeArmatura = 10 + Player.calcolaModificatore(pg.destrezza) + this.difesa;
-        OutputUtils.print("CA aggiornata: " + pg.classeArmatura);
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return String.format("%s (%.1f kg, %d oro) DEF:%d [%s]",
+        return String.format("%s (%.1f kg, %d oro) DEF:+%d [%s]",
                 getNome(), getPeso(), getValore(), difesa,
                 indossata ? "indossata" : "nello zaino");
     }
 
-    // Factory
     public static Armor corazzaSpezzata() { return new Armor(6.0,   40, "Corazza Spezzata",  2); }
     public static Armor elmoFerraglia()   { return new Armor(3.0,   35, "Elmo di Ferraglia",  1); }
     public static Armor giubboCuoio()     { return new Armor(4.0,   55, "Giubbo di Cuoio",    3); }

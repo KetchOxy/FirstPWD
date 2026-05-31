@@ -11,64 +11,72 @@ public class Location {
     public String nome;
     public String descrizione;
     public String nomeNemico;
-    public String bonusClasse;   // classe che riceve il bonus in questa location
-    public boolean bonusColpire; // vantaggio al tiro per colpire
-    public boolean bonusDanno;   // bonus ai danni
+    public String bonusClasse;
+    public boolean bonusColpire;
+    public boolean bonusDanno;
+    public Enemy nemico;
+    public Enemy boss;
 
-    // Metodo che gestisce l'intero loop interno del dungeon (le 3 stanze)
-    public void eseguiDungeon(Player pg) {
+    public enum RisultatoDungeon { COMPLETATO, RITIRATO, MORTO }
+
+    public RisultatoDungeon eseguiDungeon(Player pg) {
         OutputUtils.print("\n=============================================");
         OutputUtils.print(" SEI ENTRATO NEL DUNGEON: " + this.nome.toUpperCase());
+        OutputUtils.print(" " + this.descrizione);
         OutputUtils.print(" Supera le stanze per sconfiggere il Boss!");
         OutputUtils.print("=============================================");
 
-        for (int stanza = 1; stanza <= 3; stanza++) {
-            if (pg.getPuntiFerita() <= 0) break;
+        // INVENTARIO — solo all'inizio, prima della stanza 1
+        apriInventarioSeRichiesto(pg, "prima di entrare nel dungeon");
 
-            // INVENTARIO — sempre disponibile prima di ogni stanza
-            OutputUtils.print("\nVuoi aprire l'inventario prima di entrare? (s/n): ");
-            String apriInv = Console.readString();
-            if (apriInv.equalsIgnoreCase("s")) {
-                pg.mostraInventario();
-            }
+        for (int stanza = 1; stanza <= 3; stanza++) {
+            if (pg.getPuntiFerita() <= 0) return RisultatoDungeon.MORTO;
 
             OutputUtils.print("\n-------------------------------------------");
 
             if (stanza == 1) {
                 OutputUtils.print(">>> STANZA 1: Mostro Comune <<<");
-                Enemy nemico = CreateEnemy.crea(this, "normale");
-                int pfInizialiMostro = nemico.puntiFerita;
-                Combat.avvia(pg, nemico, this, pfInizialiMostro);
+                Enemy nemicoStanza = CreateEnemy.crea(this, "normale");
+                Combat.avvia(pg, nemicoStanza, this, nemicoStanza.getCurrentHp());
 
             } else if (stanza == 2) {
                 RoomEvent.gestisciTrappola(pg);
 
             } else {
                 OutputUtils.print(">>> !!! STANZA 3: IL BOSS DEL DUNGEON !!! <<<");
-                Enemy boss = CreateEnemy.crea(this, "boss");
-                int pfInizialiBoss = boss.puntiFerita;
-                Combat.avvia(pg, boss, this, pfInizialiBoss);
+                Enemy bossStanza = CreateEnemy.crea(this, "boss");
+                Combat.avvia(pg, bossStanza, this, bossStanza.getCurrentHp());
             }
 
-            // Ricompensa in oro e riposo intermedio (Gestito all'interno della stanza)
-            if (pg.getPuntiFerita() > 0) {
-                int moneteTrovate = Dices.tira(10) + 5;
-                pg.oro += moneteTrovate;
-                OutputUtils.print("Trovi comunque " + moneteTrovate + " monete d'oro nascoste nella stanza! (Oro totale: " + pg.oro + ")");
+            if (pg.getPuntiFerita() <= 0) return RisultatoDungeon.MORTO;
 
-                if (stanza < 3) {
-                    OutputUtils.print("\nPrendi fiato un istante prima di proseguire.");
-                    pg.riceviCura(3);
+            int moneteTrovate = Dices.tira(10) + 5;
+            pg.oro += moneteTrovate;
+            OutputUtils.print("Trovi " + moneteTrovate + " monete d'oro nascoste nella stanza! (Oro totale: " + pg.oro + ")");
 
-                    System.out.print("Vuoi continuare ad addentrarti nel dungeon? (s/n): ");
-                    String sceltaAvanti = Console.readString();
-                    if (!sceltaAvanti.equalsIgnoreCase("s")) {
-                        OutputUtils.print("Scappi terrorizzato dal dungeon abbandonando la missione!");
-                        pg.setCurrentHp(0); // Escamotage per interrompere l'avventura o puoi gestire un flag
-                        break;
-                    }
+            if (stanza < 3) {
+                OutputUtils.print("\nPrendi fiato un istante prima di proseguire.");
+                pg.riceviCura(3);
+
+                // INVENTARIO — dopo il combattimento, prima di avanzare
+                apriInventarioSeRichiesto(pg, "prima di proseguire");
+
+                System.out.print("Vuoi continuare ad addentrarti nel dungeon? (s/n): ");
+                String sceltaAvanti = Console.readString();
+                if (!sceltaAvanti.equalsIgnoreCase("s")) {
+                    OutputUtils.print("Decidi di ritirarti dal dungeon. Torni all'avamposto.");
+                    return RisultatoDungeon.RITIRATO;
                 }
             }
+        }
+        return RisultatoDungeon.COMPLETATO;
+    }
+
+    private void apriInventarioSeRichiesto(Player pg, String momento) {
+        System.out.print("\nVuoi aprire l'inventario " + momento + "? (s/n): ");
+        String risposta = Console.readString();
+        if (risposta.equalsIgnoreCase("s")) {
+            pg.gestisciInventario();
         }
     }
 }

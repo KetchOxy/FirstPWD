@@ -1,13 +1,12 @@
 package com.generation.italy.fight;
 
 import com.generation.italy.domain.Player;
+import com.generation.italy.domain.Weapon;
 import com.generation.italy.utils.Dices;
 import com.generation.italy.utils.OutputUtils;
-import com.generation.italy.utils.Weapons;
 
 public class TiroColpire {
 
-    // METODO AGGIORNATO: Riceve lo stato del tiro calcolato automaticamente dalle ferite
     public static int eseguiAutomatico(int modificatore, Player pg, int caNemico, String statoTiro) {
 
         OutputUtils.print("--- Tiro per colpire ---");
@@ -18,13 +17,13 @@ public class TiroColpire {
             int dado1 = Dices.tira(20);
             int dado2 = Dices.tira(20);
             OutputUtils.print("Lancio con VANTAGGIO. Dadi: " + dado1 + " e " + dado2);
-            tiroBase = dado1 > dado2 ? dado1 : dado2;
+            tiroBase = Math.max(dado1, dado2);
             OutputUtils.print("Tieni il piu' alto: " + tiroBase);
         } else if (statoTiro.equals("s")) {
             int dado1 = Dices.tira(20);
             int dado2 = Dices.tira(20);
             OutputUtils.print("Lancio con SVANTAGGIO. Dadi: " + dado1 + " e " + dado2);
-            tiroBase = dado1 < dado2 ? dado1 : dado2;
+            tiroBase = Math.min(dado1, dado2);
             OutputUtils.print("Tieni il piu' basso: " + tiroBase);
         } else {
             tiroBase = Dices.tira(20);
@@ -50,11 +49,15 @@ public class TiroColpire {
                 return 0;
             } else {
                 OutputUtils.print("Hai colpito! Arma: " + pg.getArma());
-                int danno = Weapons.tiraDannoArma(pg.getArma());
+
+                // Danno = dado dell'arma (D&D standard). Senza arma: 1 danno (mani nude)
+                Weapon arma = pg.getArmaIndossata();
+                int danno = (arma != null) ? arma.tiraDanno() : 1;
+                OutputUtils.print("Danno: " + danno + " (d" + (arma != null ? arma.getDado() : 1) + ")");
 
                 if (tiroBase == 20) {
                     danno = danno * 2;
-                    OutputUtils.print("*** Danno raddoppiato dal Critico! ***");
+                    OutputUtils.print("*** Danno raddoppiato dal Critico! Totale: " + danno + " ***");
                 }
                 return danno;
             }

@@ -2,121 +2,127 @@ package com.generation.italy.utils;
 
 import com.generation.italy.domain.Enemy;
 import com.generation.italy.domain.Location;
+import com.generation.italy.domain.Weapon;
 
-// CREATE ENEMY - genera il nemico in base alla location scelta e al tipo di incontro
 public class CreateEnemy {
 
+    // ── Nemici normali ───────────────────────────────────────────────────────
+
+    public static Enemy scheletro() {
+        Enemy e = new Enemy("Scheletro", 13, 1);
+        e.classeArmatura = 13;
+        e.forza = 10;
+        e.destrezza = 14;
+        e.costituzione = 15;
+        e.arma = Weapon.spadaCorta();
+        return e;
+    }
+
+    public static Enemy lupo() {
+        Enemy e = new Enemy("Lupo", 11, 1);
+        e.classeArmatura = 13;
+        e.forza = 12;
+        e.destrezza = 15;
+        e.costituzione = 12;
+        e.arma = Weapon.pugnale();
+        return e;
+    }
+
+    public static Enemy bandito() {
+        Enemy e = new Enemy("Bandito", 11, 1);
+        e.classeArmatura = 12;
+        e.forza = 11;
+        e.destrezza = 12;
+        e.costituzione = 12;
+        e.arma = Weapon.scimitarra();
+        return e;
+    }
+
+    public static Enemy zombi() {
+        Enemy e = new Enemy("Zombi", 22, 1);
+        e.classeArmatura = 8;
+        e.forza = 13;
+        e.destrezza = 6;
+        e.costituzione = 16;
+        e.arma = Weapon.flagello();
+        return e;
+    }
+
+    public static Enemy orco() {
+        Enemy e = new Enemy("Orco", 15, 1);
+        e.classeArmatura = 13;
+        e.forza = 16;
+        e.destrezza = 12;
+        e.costituzione = 16;
+        e.arma = Weapon.asciaGuerra();
+        return e;
+    }
+
+    // ── Boss ─────────────────────────────────────────────────────────────────
+
+    public static Enemy reScheletro() {
+        Enemy e = new Enemy("Il Signore delle Ossa (Re Scheletro)", 32, 1);
+        e.classeArmatura = 15;
+        e.forza = 14;
+        e.destrezza = 14;
+        e.costituzione = 16;
+        e.arma = Weapon.spadone();
+        return e;
+    }
+
+    public static Enemy fenrir() {
+        Enemy e = new Enemy("Fenrir, il Lupo Alfa", 28, 1);
+        e.classeArmatura = 14;
+        e.forza = 14;
+        e.destrezza = 16;
+        e.costituzione = 14;
+        e.arma = Weapon.spadaLunga();
+        return e;
+    }
+
+    public static Enemy garrick() {
+        Enemy e = new Enemy("Garrick, il Capo dei Tagliagole", 30, 1);
+        e.classeArmatura = 15;
+        e.forza = 12;
+        e.destrezza = 16;
+        e.costituzione = 14;
+        e.arma = Weapon.stocco();
+        return e;
+    }
+
+    public static Enemy cadavereGigante() {
+        Enemy e = new Enemy("Il Cadavere Rianimato Gigante", 45, 1);
+        e.classeArmatura = 9;
+        e.forza = 16;
+        e.destrezza = 5;
+        e.costituzione = 18;
+        e.arma = Weapon.martelloGuerra();
+        return e;
+    }
+
+    public static Enemy grommash() {
+        Enemy e = new Enemy("Grommash, il Capoguerra Orco", 40, 1);
+        e.classeArmatura = 15;
+        e.forza = 18;
+        e.destrezza = 12;
+        e.costituzione = 16;
+        e.arma = Weapon.asciaGuerra();
+        return e;
+    }
+
+    // ── Collegamento con Location — zero switch ───────────────────────────────
+
     public static Enemy crea(Location loc, String tipoIncontro) {
-
-        Enemy nemico = new Enemy();
-
-        // GESTIONE BOSS O MOSTRO NORMALE
-        if (tipoIncontro.equalsIgnoreCase("boss")) {
-            nemico.nome = "IL GRANDE " + loc.nomeNemico.toUpperCase() + " SUPREMO";
-
-            // Statistiche potenziate per i Boss del Dungeon
-            switch (loc.nomeNemico) {
-                case "Scheletro":
-                    nemico.nome = "Il Signore delle Ossa (Re Scheletro)";
-                    nemico.puntiFerita = 32;
-                    nemico.classeArmatura = 15;
-                    nemico.forza = 14;
-                    nemico.destrezza = 14;
-                    nemico.costituzione = 16;
-                    nemico.arma = "Spadone"; // Fa 2d6 danni!
-                    break;
-                case "Lupo":
-                    nemico.nome = "Fenrir, il Lupo Alfa";
-                    nemico.puntiFerita = 28;
-                    nemico.classeArmatura = 14;
-                    nemico.forza = 14;
-                    nemico.destrezza = 16;
-                    nemico.costituzione = 14;
-                    nemico.arma = "SpadaLunga";
-                    break;
-                case "Bandito":
-                    nemico.nome = "Garrick, il Capo dei Tagliagole";
-                    nemico.puntiFerita = 30;
-                    nemico.classeArmatura = 15;
-                    nemico.forza = 12;
-                    nemico.destrezza = 16;
-                    nemico.costituzione = 14;
-                    nemico.arma = "Stocco";
-                    break;
-                case "Zombi":
-                    nemico.nome = "Il Cadavere Rianimato Gigante";
-                    nemico.puntiFerita = 45; // Tantissimi PF ma CA bassa!
-                    nemico.classeArmatura = 9;
-                    nemico.forza = 16;
-                    nemico.destrezza = 5;
-                    nemico.costituzione = 18;
-                    nemico.arma = "MartelloGuerra";
-                    break;
-                default: // Orco
-                    nemico.nome = "Grommash, il Capoguerra Orco";
-                    nemico.puntiFerita = 40;
-                    nemico.classeArmatura = 15;
-                    nemico.forza = 18;
-                    nemico.destrezza = 12;
-                    nemico.costituzione = 16;
-                    nemico.arma = "AsciaGuerra";
-                    break;
-            }
-        } else {
-            // Mostro normale (codice originale)
-            nemico.nome = loc.nomeNemico;
-            switch (loc.nomeNemico) {
-                case "Scheletro":
-                    nemico.puntiFerita = 13;
-                    nemico.classeArmatura = 13;
-                    nemico.forza = 10;
-                    nemico.destrezza = 14;
-                    nemico.costituzione = 15;
-                    nemico.arma = "SpadaCorta";
-                    break;
-                case "Lupo":
-                    nemico.puntiFerita = 11;
-                    nemico.classeArmatura = 13;
-                    nemico.forza = 12;
-                    nemico.destrezza = 15;
-                    nemico.costituzione = 12;
-                    nemico.arma = "Pugnale";
-                    break;
-                case "Bandito":
-                    nemico.puntiFerita = 11;
-                    nemico.classeArmatura = 12;
-                    nemico.forza = 11;
-                    nemico.destrezza = 12;
-                    nemico.costituzione = 12;
-                    nemico.arma = "Scimitarra";
-                    break;
-                case "Zombi":
-                    nemico.puntiFerita = 22;
-                    nemico.classeArmatura = 8;
-                    nemico.forza = 13;
-                    nemico.destrezza = 6;
-                    nemico.costituzione = 16;
-                    nemico.arma = "Flagello";
-                    break;
-                default: // Orco
-                    nemico.puntiFerita = 15;
-                    nemico.classeArmatura = 13;
-                    nemico.forza = 16;
-                    nemico.destrezza = 12;
-                    nemico.costituzione = 16;
-                    nemico.arma = "AsciaGuerra";
-                    break;
-            }
-        }
+        Enemy nemico = tipoIncontro.equalsIgnoreCase("boss") ? loc.boss : loc.nemico;
 
         OutputUtils.print();
-        OutputUtils.print("=== " + (tipoIncontro.equalsIgnoreCase("boss") ? "ATTENZIONE! MINIBOSS" : "NEMICO") + " APPARSO! ===");
-        OutputUtils.print("Nome:  " + nemico.nome);
-        OutputUtils.print("PF:    " + nemico.puntiFerita);
+        OutputUtils.print("=== " + (tipoIncontro.equalsIgnoreCase("boss") ? "ATTENZIONE! BOSS" : "NEMICO") + " APPARSO! ===");
+        OutputUtils.print("Nome:  " + nemico.getNome());
+        OutputUtils.print("PF:    " + nemico.getCurrentHp());
         OutputUtils.print("CA:    " + nemico.classeArmatura);
         OutputUtils.print("FOR:   " + nemico.forza + " (mod: " + Enemy.calcolaModificatore(nemico.forza) + ")");
         OutputUtils.print("DES:   " + nemico.destrezza + " (mod: " + Enemy.calcolaModificatore(nemico.destrezza) + ")");
-        OutputUtils.print("Arma:  " + nemico.arma);
+        OutputUtils.print("Arma:  " + nemico.arma.getNome());
         OutputUtils.print();
 
         return nemico;

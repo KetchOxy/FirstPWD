@@ -53,7 +53,6 @@ public class RoomEvent {
             int danniTrappola = Dices.tira(6) + 2; // 1d6 + 2 danni
             pg.setCurrentHp(pg.getPuntiFerita() - danniTrappola);
             OutputUtils.print("Sei stato colpito dai dardi! Subisci " + danniTrappola + " danni da trappola.");
-            if (pg.getPuntiFerita() < 0) pg.setCurrentHp(0);
             OutputUtils.print("I tuoi PF attuali: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
         }
     }

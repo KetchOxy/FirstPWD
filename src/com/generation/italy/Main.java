@@ -53,17 +53,23 @@ public class Main {
         while (continua && pg.getPuntiFerita() > 0) {
 
             Location loc = CreateLocation.scegli(pg);
-            loc.eseguiDungeon(pg);
+            Location.RisultatoDungeon risultato = loc.eseguiDungeon(pg);
 
-            if (pg.getPuntiFerita() > 0) {
+            if (risultato == Location.RisultatoDungeon.COMPLETATO) {
                 OutputUtils.print("\n*********************************************************");
                 OutputUtils.print(" IMPRESA COMPIUTA! Hai distrutto il Boss del Dungeon: " + loc.nome + "!");
                 OutputUtils.print("*********************************************************");
                 OutputUtils.print();
-
                 Merchant.gestisciBottega(pg);
                 continua = CreateLocation.richiediNuovoViaggio();
+
+            } else if (risultato == Location.RisultatoDungeon.RITIRATO) {
+                OutputUtils.print("\nSei tornato all'avamposto.");
+                Merchant.gestisciBottega(pg);
+                continua = CreateLocation.richiediNuovoViaggio();
+
             }
+            // MORTO: il while si ferma da solo perché pg.getPuntiFerita() == 0
         }
 
         // 5. Conclusione

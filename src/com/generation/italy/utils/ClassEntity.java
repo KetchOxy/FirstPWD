@@ -4,12 +4,11 @@ import com.generation.italy.domain.Player;
 import com.generation.italy.domain.Item;
 import com.generation.italy.domain.Weapon;
 import com.generation.italy.domain.Armor;
-import com.generation.italy.domain.Player;
 
 public class ClassEntity extends Entity {
 
     public final int caBase;
-    public final int dadoVita;       // dado usato per i PF (d6, d8, d10, d12)
+    public final int dadoVita;
     public final String abilitaSpeciale;
 
     private ClassEntity(int caBase, int dadoVita, String nome, String abilitaSpeciale) {
@@ -19,17 +18,14 @@ public class ClassEntity extends Entity {
         this.abilitaSpeciale = abilitaSpeciale;
     }
 
-    // PF livello 1 = dadoVita (valore massimo) + modCOS
     public int calcolaHP(Player pg) {
         return this.dadoVita + Player.calcolaModificatore(pg.costituzione);
     }
 
-    // CA senza armatura = 10 + modDES
     public int calcolaCA(Player pg) {
         return 10 + Player.calcolaModificatore(pg.destrezza);
     }
 
-    // Versione per NPC/nemici senza Player — solo livello e COS flat
     public int calcolaHPNemico(int livello, int costituzione) {
         int modCos = Player.calcolaModificatore(costituzione);
         return (dadoVita + modCos) * livello;
@@ -64,110 +60,111 @@ public class ClassEntity extends Entity {
         switch (this.getNome().toLowerCase()) {
 
             case "barbaro":
-                pg.aggiungiItem(Weapon.daStringa("AsciaGuerra"));
-                pg.indossaArma((Weapon) pg.getInventario().get(0));
-                pg.aggiungiItem(Weapon.daStringa("Pugnale")); // 2 accette → pugnale come sostituto
-                pg.aggiungiItem(Item.ramoAppuntito());        // Pacco esploratore (simbolico)
+                Weapon asciaBarbaro = Weapon.asciaGuerra();
+                pg.aggiungiItem(asciaBarbaro);
+                pg.indossaArma(asciaBarbaro);
+                pg.aggiungiItem(Weapon.pugnale());
+                pg.aggiungiItem(Item.ramoAppuntito());
                 break;
 
             case "bardo":
-                Weapon stoccoBardo = Weapon.daStringa("Stocco");
+                Weapon stoccoBardo = Weapon.stocco();
                 pg.aggiungiItem(stoccoBardo);
                 pg.indossaArma(stoccoBardo);
-                pg.aggiungiItem(Armor.giubboCuoio());
-                pg.indossaArmatura((Armor) pg.getInventario().stream()
-                        .filter(i -> i instanceof Armor).findFirst().get());
-                pg.aggiungiItem(Item.amuletoFulmine());       // Strumento musicale (simbolico)
-                pg.aggiungiItem(Weapon.daStringa("Pugnale"));
+                Armor giubboBardo = Armor.giubboCuoio();
+                pg.aggiungiItem(giubboBardo);
+                pg.indossaArmatura(giubboBardo);
+                pg.aggiungiItem(Item.amuletoFulmine());
+                pg.aggiungiItem(Weapon.pugnale());
                 break;
 
             case "chierico":
-                Weapon martelloChierico = Weapon.daStringa("MartelloGuerra");
+                Weapon martelloChierico = Weapon.martelloGuerra();
                 pg.aggiungiItem(martelloChierico);
                 pg.indossaArma(martelloChierico);
-                pg.aggiungiItem(Armor.corazzaSpezzata());     // Armatura media
-                pg.indossaArmatura((Armor) pg.getInventario().stream()
-                        .filter(i -> i instanceof Armor).findFirst().get());
-                pg.aggiungiItem(Item.amuletoFulmine());       // Simbolo sacro
+                Armor corazzaChierico = Armor.corazzaSpezzata();
+                pg.aggiungiItem(corazzaChierico);
+                pg.indossaArmatura(corazzaChierico);
+                pg.aggiungiItem(Item.amuletoFulmine());
                 break;
 
             case "druido":
-                Weapon falcettoDruido = Weapon.daStringa("Falcione");
-                pg.aggiungiItem(falcettoDruido);
-                pg.indossaArma(falcettoDruido);
+                Weapon falcioneDruido = Weapon.falcione();
+                pg.aggiungiItem(falcioneDruido);
+                pg.indossaArma(falcioneDruido);
                 pg.aggiungiItem(Armor.scudoFerro());
-                pg.aggiungiItem(Item.ramoAppuntito());        // Focus druidico
+                pg.aggiungiItem(Item.ramoAppuntito());
                 break;
 
             case "guerriero":
-                Weapon spadaGuerriero = Weapon.daStringa("SpadaLunga");
+                Weapon spadaGuerriero = Weapon.spadaLunga();
                 pg.aggiungiItem(spadaGuerriero);
                 pg.indossaArma(spadaGuerriero);
-                pg.aggiungiItem(Armor.giubboCuoio());         // Cotta di maglia → giubbo cuoio
-                pg.indossaArmatura((Armor) pg.getInventario().stream()
-                        .filter(i -> i instanceof Armor).findFirst().get());
+                Armor giubboGuerriero = Armor.giubboCuoio();
+                pg.aggiungiItem(giubboGuerriero);
+                pg.indossaArmatura(giubboGuerriero);
                 pg.aggiungiItem(Armor.scudoFerro());
                 break;
 
             case "monaco":
-                Weapon bastonMonaco = Weapon.daStringa("Bastone");
+                Weapon bastonMonaco = Weapon.bastone();
                 pg.aggiungiItem(bastonMonaco);
                 pg.indossaArma(bastonMonaco);
-                pg.aggiungiItem(Weapon.daStringa("Pugnale")); // Dardi → pugnale
+                pg.aggiungiItem(Weapon.pugnale());
                 break;
 
             case "paladino":
-                Weapon spadaPaladino = Weapon.daStringa("SpadaLunga");
+                Weapon spadaPaladino = Weapon.spadaLunga();
                 pg.aggiungiItem(spadaPaladino);
                 pg.indossaArma(spadaPaladino);
-                pg.aggiungiItem(Armor.scudoFerro());
-                pg.indossaArmatura((Armor) pg.getInventario().stream()
-                        .filter(i -> i instanceof Armor).findFirst().get());
-                pg.aggiungiItem(Item.amuletoFulmine());       // Simbolo sacro
-                pg.aggiungiItem(Weapon.daStringa("Lancia"));  // Giavellotti
+                Armor scudoPaladino = Armor.scudoFerro();
+                pg.aggiungiItem(scudoPaladino);
+                pg.indossaArmatura(scudoPaladino);
+                pg.aggiungiItem(Item.amuletoFulmine());
+                pg.aggiungiItem(Weapon.lancia());
                 break;
 
             case "ranger":
-                Weapon spadaRanger = Weapon.daStringa("SpadaCorta");
+                Weapon spadaRanger = Weapon.spadaCorta();
                 pg.aggiungiItem(spadaRanger);
                 pg.indossaArma(spadaRanger);
-                pg.aggiungiItem(Weapon.daStringa("SpadaCorta")); // Due spade corte
-                pg.aggiungiItem(Armor.giubboCuoio());
-                pg.indossaArmatura((Armor) pg.getInventario().stream()
-                        .filter(i -> i instanceof Armor).findFirst().get());
+                pg.aggiungiItem(Weapon.spadaCorta());
+                Armor giubboRanger = Armor.giubboCuoio();
+                pg.aggiungiItem(giubboRanger);
+                pg.indossaArmatura(giubboRanger);
                 break;
 
             case "ladro":
-                Weapon stoccoLadro = Weapon.daStringa("Stocco");
+                Weapon stoccoLadro = Weapon.stocco();
                 pg.aggiungiItem(stoccoLadro);
                 pg.indossaArma(stoccoLadro);
-                pg.aggiungiItem(Weapon.daStringa("SpadaCorta"));
-                pg.aggiungiItem(Item.picconeIncantato());     // Attrezzi da scasso
+                pg.aggiungiItem(Weapon.spadaCorta());
+                pg.aggiungiItem(Item.picconeIncantato());
                 break;
 
             case "stregone":
-                Weapon bacchettaStregone = Weapon.daStringa("Bastone");
-                pg.aggiungiItem(bacchettaStregone);
-                pg.indossaArma(bacchettaStregone);
-                pg.aggiungiItem(Item.amuletoFulmine());       // Focus arcano
+                Weapon bastonStregone = Weapon.bastone();
+                pg.aggiungiItem(bastonStregone);
+                pg.indossaArma(bastonStregone);
+                pg.aggiungiItem(Item.amuletoFulmine());
                 break;
 
             case "warlock":
-                Weapon armaWarlock = Weapon.daStringa("Pugnale");
+                Weapon armaWarlock = Weapon.pugnale();
                 pg.aggiungiItem(armaWarlock);
                 pg.indossaArma(armaWarlock);
-                pg.aggiungiItem(Armor.giubboCuoio());
-                pg.indossaArmatura((Armor) pg.getInventario().stream()
-                        .filter(i -> i instanceof Armor).findFirst().get());
-                pg.aggiungiItem(Item.amuletoFulmine());       // Focus arcano
+                Armor giubboWarlock = Armor.giubboCuoio();
+                pg.aggiungiItem(giubboWarlock);
+                pg.indossaArmatura(giubboWarlock);
+                pg.aggiungiItem(Item.amuletoFulmine());
                 break;
 
             case "mago":
-                Weapon bastoneMago = Weapon.daStringa("Bastone");
+                Weapon bastoneMago = Weapon.bastone();
                 pg.aggiungiItem(bastoneMago);
                 pg.indossaArma(bastoneMago);
                 pg.aggiungiItem(Item.libroIncantesimi());
-                pg.aggiungiItem(Item.amuletoFulmine());       // Focus arcano
+                pg.aggiungiItem(Item.amuletoFulmine());
                 break;
         }
     }
