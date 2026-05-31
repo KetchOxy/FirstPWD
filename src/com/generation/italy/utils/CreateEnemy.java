@@ -24,7 +24,7 @@ public class CreateEnemy {
         e.forza = 12;
         e.destrezza = 15;
         e.costituzione = 12;
-        e.arma = Weapon.pugnale();
+        e.arma = null;
         return e;
     }
 
@@ -110,10 +110,33 @@ public class CreateEnemy {
         return e;
     }
 
-    // ── Collegamento con Location — zero switch ───────────────────────────────
+    // ── Crea una nuova istanza fresca dal nome — usato per resettare i nemici ──
+
+    public static Enemy creaFresco(String nome) {
+        switch (nome.toLowerCase()) {
+            // Nemici normali
+            case "scheletro":                          return scheletro();
+            case "lupo":                               return lupo();
+            case "bandito":                            return bandito();
+            case "zombi":                              return zombi();
+            case "orco":                               return orco();
+            // Boss
+            case "il signore delle ossa (re scheletro)": return reScheletro();
+            case "fenrir, il lupo alfa":               return fenrir();
+            case "garrick, il capo dei tagliagole":    return garrick();
+            case "il cadavere rianimato gigante":      return cadavereGigante();
+            case "grommash, il capoguerra orco":       return grommash();
+            default:
+                throw new IllegalArgumentException("Nemico non trovato: " + nome);
+        }
+    }
+
+    // ── Collegamento con Location — restituisce SEMPRE un'istanza fresca ─────
 
     public static Enemy crea(Location loc, String tipoIncontro) {
-        Enemy nemico = tipoIncontro.equalsIgnoreCase("boss") ? loc.boss : loc.nemico;
+        // Prende il template solo per leggere il nome, poi crea un nemico nuovo
+        Enemy template = tipoIncontro.equalsIgnoreCase("boss") ? loc.boss : loc.nemico;
+        Enemy nemico = creaFresco(template.getNome());
 
         OutputUtils.print();
         OutputUtils.print("=== " + (tipoIncontro.equalsIgnoreCase("boss") ? "ATTENZIONE! BOSS" : "NEMICO") + " APPARSO! ===");
@@ -122,7 +145,7 @@ public class CreateEnemy {
         OutputUtils.print("CA:    " + nemico.classeArmatura);
         OutputUtils.print("FOR:   " + nemico.forza + " (mod: " + Enemy.calcolaModificatore(nemico.forza) + ")");
         OutputUtils.print("DES:   " + nemico.destrezza + " (mod: " + Enemy.calcolaModificatore(nemico.destrezza) + ")");
-        OutputUtils.print("Arma:  " + nemico.arma.getNome());
+        OutputUtils.print("Arma:  " + (nemico.arma != null ? nemico.arma.getNome() : "Mani nude"));
         OutputUtils.print();
 
         return nemico;

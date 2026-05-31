@@ -52,8 +52,16 @@ public class TiroColpire {
 
                 // Danno = dado dell'arma (D&D standard). Senza arma: 1 danno (mani nude)
                 Weapon arma = pg.getArmaIndossata();
-                int danno = (arma != null) ? arma.tiraDanno() : 1;
-                OutputUtils.print("Danno: " + danno + " (d" + (arma != null ? arma.getDado() : 1) + ")");
+                int danno;
+
+                if (arma != null) {
+                    danno = arma.tiraDanno();
+                    OutputUtils.print("Danno: " + danno + " (d" + arma.getDado() + ")");
+                } else {
+                    int modForza = Player.calcolaModificatore(pg.forza);
+                    danno = 1 + modForza;
+                    OutputUtils.print("Mani nude! Danno: 1 + mod FOR(" + modForza + ") = " + danno);
+                }
 
                 if (tiroBase == 20) {
                     danno = danno * 2;

@@ -17,20 +17,34 @@ public class Location {
     public Enemy nemico;
     public Enemy boss;
 
-    public enum RisultatoDungeon { COMPLETATO, RITIRATO, MORTO }
+    // ── Risultato dungeon con stanza salvata ─────────────────────────────────
 
-    public RisultatoDungeon eseguiDungeon(Player pg) {
+    public static class RisultatoDungeon {
+        public enum Stato { COMPLETATO, RITIRATO, MORTO, MERCANTE }
+        public Stato stato;
+        public int prossimaStanza;
+
+        public RisultatoDungeon(Stato stato, int prossimaStanza) {
+            this.stato = stato;
+            this.prossimaStanza = prossimaStanza;
+        }
+    }
+
+    // ── Esegui dungeon dalla stanza indicata ─────────────────────────────────
+
+    public RisultatoDungeon eseguiDungeon(Player pg, int stanzaDaRiprendere) {
         OutputUtils.print("\n=============================================");
         OutputUtils.print(" SEI ENTRATO NEL DUNGEON: " + this.nome.toUpperCase());
         OutputUtils.print(" " + this.descrizione);
         OutputUtils.print(" Supera le stanze per sconfiggere il Boss!");
         OutputUtils.print("=============================================");
 
-        // INVENTARIO — solo all'inizio, prima della stanza 1
         apriInventarioSeRichiesto(pg, "prima di entrare nel dungeon");
 
-        for (int stanza = 1; stanza <= 3; stanza++) {
-            if (pg.getPuntiFerita() <= 0) return RisultatoDungeon.MORTO;
+        for (int stanza = stanzaDaRiprendere; stanza <= 3; stanza++) {
+            if (pg.getPuntiFerita() <= 0) {
+                return new RisultatoDungeon(RisultatoDungeon.Stato.MORTO, stanza);
+            }
 
             OutputUtils.print("\n-------------------------------------------");
 
@@ -48,28 +62,37 @@ public class Location {
                 Combat.avvia(pg, bossStanza, this, bossStanza.getCurrentHp());
             }
 
-            if (pg.getPuntiFerita() <= 0) return RisultatoDungeon.MORTO;
+            if (pg.getPuntiFerita() <= 0) {
+                return new RisultatoDungeon(RisultatoDungeon.Stato.MORTO, stanza);
+            }
 
             int moneteTrovate = Dices.tira(10) + 5;
             pg.oro += moneteTrovate;
-            OutputUtils.print("Trovi " + moneteTrovate + " monete d'oro nascoste nella stanza! (Oro totale: " + pg.oro + ")");
+            OutputUtils.print("Trovi " + moneteTrovate + " monete d'oro! (Oro totale: " + pg.oro + ")");
 
             if (stanza < 3) {
                 OutputUtils.print("\nPrendi fiato un istante prima di proseguire.");
-                pg.riceviCura(3);
+                OutputUtils.print("PF attuali: " + pg.getPuntiFerita() + "/" + pg.getPuntiFeritaMax());
 
-                // INVENTARIO — dopo il combattimento, prima di avanzare
                 apriInventarioSeRichiesto(pg, "prima di proseguire");
 
-                System.out.print("Vuoi continuare ad addentrarti nel dungeon? (s/n): ");
+                OutputUtils.print("Cosa vuoi fare?");
+                OutputUtils.print("  S - Continua nel dungeon");
+                OutputUtils.print("  M - Vai dal Mercante (tornerai alla stanza " + (stanza + 1) + ")");
+                OutputUtils.print("  N - Ritirati dal dungeon");
+                System.out.print("-> ");
                 String sceltaAvanti = Console.readString();
-                if (!sceltaAvanti.equalsIgnoreCase("s")) {
+
+                if (sceltaAvanti.equalsIgnoreCase("m")) {
+                    OutputUtils.print("Torni all'avamposto dal mercante...");
+                    return new RisultatoDungeon(RisultatoDungeon.Stato.MERCANTE, stanza + 1);
+                } else if (!sceltaAvanti.equalsIgnoreCase("s")) {
                     OutputUtils.print("Decidi di ritirarti dal dungeon. Torni all'avamposto.");
-                    return RisultatoDungeon.RITIRATO;
+                    return new RisultatoDungeon(RisultatoDungeon.Stato.RITIRATO, 1);
                 }
             }
         }
-        return RisultatoDungeon.COMPLETATO;
+        return new RisultatoDungeon(RisultatoDungeon.Stato.COMPLETATO, 1);
     }
 
     private void apriInventarioSeRichiesto(Player pg, String momento) {

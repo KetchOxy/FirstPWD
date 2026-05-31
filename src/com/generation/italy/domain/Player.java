@@ -2,6 +2,7 @@ package com.generation.italy.domain;
 
 import com.generation.italy.utils.Entity;
 import com.generation.italy.utils.OutputUtils;
+import com.generation.italy.utils.Dices;
 import com.generation.library.Console;
 import java.util.ArrayList;
 
@@ -17,12 +18,12 @@ public class Player extends Entity {
     public int carisma;
     public int classeArmatura;
 
-    public int oro           = 0;
+    public int oro          = 0;
     public int numeroPozioni = 2;
 
-    private ArrayList<Item> inventario = new ArrayList<>();
-    private Weapon armaIndossata       = null;
-    private Armor  armaturaIndossata   = null;
+    private ArrayList<Item> inventario  = new ArrayList<>();
+    private Weapon armaIndossata        = null;
+    private Armor  armaturaIndossata    = null;
 
     public Player(String nome, int hp, int level) {
         super(hp, nome, level);
@@ -50,9 +51,9 @@ public class Player extends Entity {
 
     // ── Inventario — getters ─────────────────────────────────────────────────
 
-    public ArrayList<Item> getInventario()   { return inventario; }
-    public Weapon getArmaIndossata()         { return armaIndossata; }
-    public Armor  getArmaturaIndossata()     { return armaturaIndossata; }
+    public ArrayList<Item> getInventario()  { return inventario; }
+    public Weapon getArmaIndossata()        { return armaIndossata; }
+    public Armor  getArmaturaIndossata()    { return armaturaIndossata; }
 
     // ── Inventario — azioni ──────────────────────────────────────────────────
 
@@ -163,14 +164,16 @@ public class Player extends Entity {
     public void gestisciInventario() {
         while (true) {
             mostraInventario();
-            if (inventario.isEmpty()) {
-                OutputUtils.print("Lo zaino e' vuoto. Premi I per uscire.");
-            }
 
             OutputUtils.print("Cosa vuoi fare?");
             if (!inventario.isEmpty()) {
                 OutputUtils.print("  U - Usa / Equipaggia oggetto");
                 OutputUtils.print("  L - Lascia oggetto a terra");
+            } else {
+                OutputUtils.print("  Zaino vuoto.");
+            }
+            if (numeroPozioni > 0) {
+                OutputUtils.print("  P - Bevi Pozione veloce (Rimanenti: " + numeroPozioni + ")");
             }
             OutputUtils.print("  I - Esci dall'inventario");
             System.out.print("-> ");
@@ -185,6 +188,16 @@ public class Player extends Entity {
                     if (!inventario.isEmpty()) menuLascia();
                     else OutputUtils.print("Non hai oggetti da lasciare.");
                     break;
+                case "p":
+                    if (numeroPozioni > 0) {
+                        int cura = Dices.tira(4) + Dices.tira(4) + 2;
+                        riceviCura(cura);
+                        numeroPozioni--;
+                        OutputUtils.print("Pozioni rimaste: " + numeroPozioni);
+                    } else {
+                        OutputUtils.print("Non hai pozioni veloci!");
+                    }
+                    break;  // ← rimane nel while, non esce
                 case "i":
                     return;
                 default:
@@ -221,5 +234,4 @@ public class Player extends Entity {
     public static int calcolaModificatore(int punteggio) {
         return (punteggio - 10) / 2;
     }
-
 }

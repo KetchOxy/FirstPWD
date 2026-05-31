@@ -16,27 +16,24 @@ public class Main {
 
         OutputUtils.printTitle();
 
-        // 1. Inizializzazione Personaggio e Caratteristiche
+        // 1. Creazione personaggio
         Player pg = CreatePlayer.crea();
         Stats.assegna(pg);
 
-        // Applica bonus razziali — PRIMA di ClassEntity
         RaceEntity razzaPg = RaceEntity.da(pg.specie);
         razzaPg.applicaBonus(pg);
         OutputUtils.print("Razza: " + razzaPg.getNome() + " — " + razzaPg.trattoSpeciale);
 
-        // CA e PF calcolati da ClassEntity
         ClassEntity classePg = ClassEntity.da(pg.classe);
         pg.classeArmatura = classePg.calcolaCA(pg);
         pg.setMaxHp(classePg.calcolaHP(pg));
+
         OutputUtils.print();
         OutputUtils.print("=== Equipaggiamento Iniziale ===");
         classePg.equipaggioIniziale(pg);
         OutputUtils.print("================================");
         OutputUtils.print();
 
-        // RIEPILOGO PERSONAGGIO
-        OutputUtils.print();
         OutputUtils.print("=== Scheda Personaggio ===");
         OutputUtils.print("Nome:   " + pg.getNome());
         OutputUtils.print("Specie: " + pg.specie);
@@ -54,29 +51,57 @@ public class Main {
 
         // CICLO GENERALE DEL GIOCO
         boolean continua = true;
+        Location loc = CreateLocation.scegli(pg);  // scelta location FUORI dal while
+        int stanzaDaRiprendere = 1;
+
         while (continua && pg.getPuntiFerita() > 0) {
 
-            Location loc = CreateLocation.scegli(pg);
-            Location.RisultatoDungeon risultato = loc.eseguiDungeon(pg);
+            Location.RisultatoDungeon risultato = loc.eseguiDungeon(pg, stanzaDaRiprendere);
 
-            if (risultato == Location.RisultatoDungeon.COMPLETATO) {
-                OutputUtils.print("\n*********************************************************");
-                OutputUtils.print(" IMPRESA COMPIUTA! Hai distrutto il Boss del Dungeon: " + loc.nome + "!");
-                OutputUtils.print("*********************************************************");
-                OutputUtils.print();
-                Merchant.gestisciBottega(pg);
-                continua = CreateLocation.richiediNuovoViaggio();
+            switch (risultato.stato) {
 
-            } else if (risultato == Location.RisultatoDungeon.RITIRATO) {
-                OutputUtils.print("\nSei tornato all'avamposto.");
-                Merchant.gestisciBottega(pg);
-                continua = CreateLocation.richiediNuovoViaggio();
+                case MORTO:
+                    // il while si ferma da solo
+                    break;
 
+                case MERCANTE:
+                    // torna dal mercante e RIPRENDE lo stesso dungeon dalla stanza salvata
+                    OutputUtils.print("\nSei tornato all'avamposto dal mercante.");
+                    Merchant.gestisciBottega(pg);
+                    stanzaDaRiprendere = risultato.prossimaStanza;
+                    OutputUtils.print("Torni nel dungeon " + loc.nome + " dalla stanza " + stanzaDaRiprendere + "...");
+                    break;
+
+                case RITIRATO:
+                    // ritiro vero — reset completo, sceglie nuovo dungeon
+                    OutputUtils.print("\nSei tornato all'avamposto.");
+                    stanzaDaRiprendere = 1;
+                    continua = CreateLocation.richiediNuovoViaggio();
+                    if (continua) loc = CreateLocation.scegli(pg);
+                    break;
+
+                case COMPLETATO:
+                    OutputUtils.print("\n*********************************************************");
+                    OutputUtils.print(" IMPRESA COMPIUTA! Hai distrutto il Boss del Dungeon: " + loc.nome + "!");
+                    OutputUtils.print("*********************************************************");
+                    OutputUtils.print();
+                    Merchant.gestisciBottega(pg);
+                    stanzaDaRiprendere = 1;
+                    continua = CreateLocation.richiediNuovoViaggio();
+                    if (continua) loc = CreateLocation.scegli(pg);
+                    break;
             }
-            // MORTO: il while si ferma da solo perché pg.getPuntiFerita() == 0
         }
 
-        // 5. Conclusione
+        // Conclusione
+        if (pg.getPuntiFerita() <= 0) {
+            OutputUtils.print("\nLa tua avventura finisce qui... Le canzoni ricorderanno il tuo sacrificio.");
+        } else {
+            OutputUtils.print("\nHai deciso di ritirarti dalle leggende. Ti godi le tue " + pg.oro + " monete d'oro in taverna!");
+        }
+
+
+        // Conclusione
         if (pg.getPuntiFerita() <= 0) {
             OutputUtils.print("\nLa tua avventura finisce qui... Le canzoni ricorderanno il tuo sacrificio.");
         } else {

@@ -83,7 +83,15 @@ public class Combat {
                         OutputUtils.print(nemico.getNome() + " ha mancato! La tua CA e': " + pg.classeArmatura);
                     } else {
                         if (tiroNemico == 20) OutputUtils.print("*** CRITICO del nemico! ***");
-                        int dannoNemico = nemico.arma.tiraDanno();
+                        int dannoNemico;
+                        if (nemico.arma != null) {
+                            dannoNemico = nemico.arma.tiraDanno();
+                            OutputUtils.print(nemico.getNome() + " attacca con " + nemico.arma.getNome() + "!");
+                        } else {
+                            int modForza = Enemy.calcolaModificatore(nemico.forza);
+                            dannoNemico = 1 + modForza;
+                            OutputUtils.print(nemico.getNome() + " attacca a mani nude! Danno: 1 + mod FOR(" + modForza + ") = " + dannoNemico);
+                        }
                         if (tiroNemico == 20) dannoNemico *= 2;
                         pg.setCurrentHp(pg.getPuntiFerita() - dannoNemico);
                         OutputUtils.print(nemico.getNome() + " ti ha colpito per " + dannoNemico + " danni!");
