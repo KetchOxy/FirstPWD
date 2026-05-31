@@ -29,7 +29,11 @@ public class Main {
         ClassEntity classePg = ClassEntity.da(pg.classe);
         pg.classeArmatura = classePg.calcolaCA(pg);
         pg.setMaxHp(classePg.calcolaHP(pg));
+        OutputUtils.print();
+        OutputUtils.print("=== Equipaggiamento Iniziale ===");
         classePg.equipaggioIniziale(pg);
+        OutputUtils.print("================================");
+        OutputUtils.print();
 
         // RIEPILOGO PERSONAGGIO
         OutputUtils.print();
